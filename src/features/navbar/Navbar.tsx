@@ -1,19 +1,19 @@
 import React from 'react';
 import {Link, NavLink} from 'react-router-dom';
-import Profile from "../profile/Profile";
-import {Login} from "../Login/Login";
-import NewPassword from "../newPassword/NewPassword";
-import Recovery from "../recovery/Recovery";
-import Registration from "../registration/Registration";
-import Test from "../test/Test";
-import {Error404} from "../404/Error404";
 import s from './navbar.module.css'
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "../../app/store";
 
 const Navbar = () => {
+    const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.auth.isLoggedIn)
+
     return (
         <div className={s.nav}>
             <NavLink to={{pathname:'/'}}>Profile</NavLink>
-            <NavLink to={{pathname:'login'}}>Login</NavLink>
+            {!isLoggedIn
+                ? <NavLink to={{pathname: 'login'}}>Login</NavLink>
+                : <NavLink to={{pathname: 'login'}}>Logout</NavLink>
+            }
             <NavLink to={{pathname:'recovery'}}>Recovery</NavLink>
             <Link to={'registration'}>Registration</Link>
             <Link to={'test'}>Test</Link>

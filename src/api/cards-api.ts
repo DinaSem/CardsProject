@@ -35,10 +35,13 @@ export const cardsApi = {
 }
 export const authAPI = {
     login(data:LoginParamsType) {
-       return instance.post<LoginParamsType,AxiosResponse<ResponseTypeCards>>(`/auth/login`,data)
+       return instance.post<LoginParamsType,AxiosResponse<UserDataResponseType>>(`/auth/login`,data)
+    },
+    register(data:RegisterParamsType) {
+        return instance.post<RegisterParamsType,ResponseRegisterType>(`/auth/register`,data)
     },
     me(){
-        return instance.get<ResponseType<MeResponseType>>('/auth/me')
+        return instance.get<{},AxiosResponse<UserDataResponseType>>('/auth/me',{})
     },
 
     logout(){
@@ -60,33 +63,34 @@ export type ResponseType<D = {}> = {
     fieldsErrors: Array<string>
     data: D
 }
-export type ResponseTypeCards = {
-
+export type UserDataResponseType = {
     _id: string;
     email: string;
     name: string;
     avatar?: string;
-    publicCardPacksCount: number;
-// количество колод
-
+    publicCardPacksCount: number; // количество колод
     created: Date;
     updated: Date;
     isAdmin: boolean;
     verified: boolean; // подтвердил ли почту
     rememberMe: boolean;
-
     error?: string;
 }
-export type MeResponseType = {
-    id: number
-    email: string
-    login: string
+
+export type ResponseRegisterType = {
+    addedUser: {} // чтобы посмотреть как выглядит созданный юзер
+    error?: string;
 }
+
 export type LoginParamsType= {
     email: string
     password: string
     rememberMe?: boolean
     captcha?: string
+}
+export type RegisterParamsType= {
+    email: string
+    password: string
 }
 
 
