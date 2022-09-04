@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
+import axios, {AxiosResponse} from 'axios'
 
 export const instance = axios.create({
     baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/',
@@ -34,19 +34,27 @@ export const cardsApi = {
 
 }
 export const authAPI = {
-    login(data:LoginParamsType) {
-       return instance.post<LoginParamsType,AxiosResponse<UserDataResponseType>>(`/auth/login`,data)
+    login(data: LoginParamsType) {
+        return instance.post<LoginParamsType, AxiosResponse<UserDataResponseType>>(`/auth/login`, data)
     },
-    register(data:RegisterParamsType) {
-        return instance.post<RegisterParamsType,ResponseRegisterType>(`/auth/register`,data)
+    register(data: RegisterParamsType) {
+        return instance.post<RegisterParamsType, ResponseRegisterType>(`/auth/register`, data)
     },
-    me(){
-        return instance.get<{},AxiosResponse<UserDataResponseType>>('/auth/me',{})
+    me() {
+        return instance.post<{}, AxiosResponse<UserDataResponseType>>('/auth/me', {})
     },
-
-    logout(){
-        return instance.delete<ResponseType>(`/auth/login`)
-    }
+    logout() {
+        return instance.delete<UniversalResponseType>(`/auth/me`)
+    },
+    updateUser(name: string) {
+        return instance.put<string, AxiosResponse<ResponseType>>('/auth/me', name)
+    },
+    forgotPassword(data: ForgotPasswordParamsType) {
+        return instance.post <ForgotPasswordParamsType, AxiosResponse<UniversalResponseType>>('/auth/forgot', data)
+    },
+    newPassword(data: NewtPasswordParamsType) {
+        return instance.post <NewtPasswordParamsType, AxiosResponse<UniversalResponseType>>('/auth/set-new-password', data)
+    },
 }
 
 
@@ -81,19 +89,39 @@ export type ResponseRegisterType = {
     addedUser: {} // чтобы посмотреть как выглядит созданный юзер
     error?: string;
 }
+export type UpdateUserResponseType = {
+    updatedUser: {}
+    error?: string
+}
+export type UniversalResponseType = {
+    updatedUser: {}
+    error?: string
+}
 
-export type LoginParamsType= {
+
+export type LoginParamsType = {
     email: string
     password: string
     rememberMe?: boolean
     captcha?: string
 }
-export type RegisterParamsType= {
+export type RegisterParamsType = {
     email: string
     password: string
 }
-
-
+export type UpdateUserParamsType = {
+    name: string
+    // avatar?: string
+}
+export type ForgotPasswordParamsType = {
+    email: string // кому восстанавливать пароль
+    from: string// можно указать разработчика фронта
+    message: string// хтмп-письмо, вместо $token$ бэк вставит токен
+}
+export type NewtPasswordParamsType = {
+    password: string
+    resetPasswordToken: string
+}
 
 export enum TaskStatuses {
     New = 0,

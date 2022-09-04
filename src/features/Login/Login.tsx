@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Grid from '@mui/material/Grid';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 import {useFormik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {loginTC} from "./auth-reducer";
-import {Link, Navigate, NavLink} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {AppRootStateType} from "../../app/store";
 
 type FormikErrorType = {
@@ -20,15 +20,14 @@ type FormikErrorType = {
 export const Login = () => {
     const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.auth.isLoggedIn)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const formik = useFormik({
         initialValues: {
             email: '',
             password: '',
             rememberMe: false
-            // email: "nya-admin@nya.nya",
-            // password: "1qazxcvBG",
-            // rememberMe: false
+
         },
         validate: (values) => {
             const errors: FormikErrorType = {}
@@ -50,9 +49,12 @@ export const Login = () => {
             formik.resetForm()
         },
     })
-    if (isLoggedIn) {
-        return <Navigate to={'/'}/>
-    }
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate('/')
+        } else return
+    }, [navigate, isLoggedIn])
+
     return <form onSubmit={formik.handleSubmit}>
         <Grid container justifyContent={'center'}>
             <Grid item justifyContent={'center'}>

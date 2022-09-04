@@ -15,12 +15,12 @@ import {initializeAppTC} from "../features/Login/auth-reducer";
 
 
 
-
 export const App = () => {
     const dispatch = useDispatch()
     useEffect(()=>{
         dispatch(initializeAppTC())
-    },[])
+    },[dispatch])
+
     return <div className="App">
         <ErrorSnackbar/>
         <Navbar/>
