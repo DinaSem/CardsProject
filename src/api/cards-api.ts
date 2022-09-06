@@ -1,7 +1,8 @@
 import axios, {AxiosResponse} from 'axios'
 
 export const instance = axios.create({
-    baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/',
+    baseURL:  "https://neko-back.herokuapp.com/2.0",
+    // baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/',
     withCredentials: true,
 })
 
@@ -47,10 +48,16 @@ export const authAPI = {
         return instance.delete<UniversalResponseType>(`/auth/me`)
     },
     updateUser(name: string) {
-        return instance.put<string, AxiosResponse<ResponseType>>('/auth/me', name)
+        return instance.put<{name:string}, AxiosResponse<ResponseType>>('/auth/me', {name})
     },
-    forgotPassword(data: ForgotPasswordParamsType) {
-        return instance.post <ForgotPasswordParamsType, AxiosResponse<UniversalResponseType>>('/auth/forgot', data)
+    forgotPassword(email: string) {
+        const payload:ForgotPasswordParamsType={
+            email,
+            from: "test-front-admin <d.r.semenovaa@yandex.ru>",
+            message: `<div style="background-color: lime; padding: 15px">password recovery link: <a href='http://localhost:3000/#/set-new-password/$token$'>link</a></div>`
+
+        }
+        return instance.post <ForgotPasswordParamsType, AxiosResponse<UniversalResponseType>>('/auth/forgot', payload)
     },
     newPassword(data: NewtPasswordParamsType) {
         return instance.post <NewtPasswordParamsType, AxiosResponse<UniversalResponseType>>('/auth/set-new-password', data)

@@ -23,25 +23,6 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
 export const setIsInitializedAC = (value: boolean) =>
     ({type: 'login/SET-IS-INITIALIZED--IN', value} as const)
 
-// export const initializeAppTC = () => (dispatch: Dispatch) => {
-//     debugger
-//     dispatch(setAppStatusAC('loading'))
-//     authAPI.me().then(res => {
-//         debugger
-//         if (res.data.resultCode === 0) {
-//             dispatch(setIsInitializedAC(true))
-//             dispatch(setAppStatusAC('succeeded'))
-//         } else {
-//             handleServerAppError(res.data, dispatch);
-//         }
-//     })
-//         .catch((error) => {
-//             handleServerNetworkError(error, dispatch)
-//         })
-//         .finally(()=>{
-//             dispatch(setIsInitializedAC(true))
-//         })
-// }
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export type InitialStateType = {

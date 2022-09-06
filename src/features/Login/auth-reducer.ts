@@ -1,26 +1,33 @@
 import {Dispatch} from 'redux'
 import {SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from '../../app/app-reducer'
 import {
-    authAPI,
+    authAPI, ForgotPasswordParamsType,
     LoginParamsType,
     RegisterParamsType, UpdateUserParamsType,
     UpdateUserResponseType,
     UserDataResponseType
 } from "../../api/cards-api";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
+import {AppRootStateType} from "../../app/store";
 
 
 const initialState = {
     isLoggedIn: false,
     isRegistered: false,
     user: null,
-    name:''
+    name: '',
+    forgotPasswordData: {
+        email: "", // кому восстанавливать пароль
+        from: "test-front-admin <d.r.semenovaa@yandex.ru>",
+        message: `<div style="background-color: lime; padding: 15px">password recovery link: <a href='http://localhost:3000/#/set-new-password/$token$'>link</a></div>` // хтмп-письмо, вместо $token$ бэк вставит токен
+    }
 }
 type InitialStateType = {
     user: UserDataResponseType | null,
     isLoggedIn: boolean
     isRegistered: boolean
-    name:string
+    name: string
+    forgotPasswordData: ForgotPasswordParamsType
 }
 
 export const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
@@ -36,11 +43,12 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
                 isLoggedIn: false
             }
         case "login/UPDATE-USER":
-            return {...state, name:action.name}
-
-default:
-    return state
-}
+            return {...state, name: action.name}
+        case "login/FORGOT-PASSWORD":
+            return {...state, forgotPasswordData:{...state.forgotPasswordData, email:action.email}}
+        default:
+            return state
+    }
 }
 // actions
 export const setIsLoggedInAC = (payload: UserDataResponseType) =>
@@ -51,6 +59,8 @@ export const setIsLoggedOutAC = () =>
     ({type: 'login/SET-IS-LOGGED-OUT'} as const)
 export const updateUsertAC = (name: string) =>
     ({type: 'login/UPDATE-USER', name} as const)
+export const forgotPasswordtAC = (email: string) =>
+    ({type: 'login/FORGOT-PASSWORD', email} as const)
 
 
 // thunks
@@ -97,42 +107,46 @@ export const initializeAppTC = () => (dispatch: Dispatch) => {
             console.log('me', res.data)
         })
 }
-export const updateUserTC = (name:string) => (dispatch: Dispatch) => {
+export const updateUserTC = (name: string) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
-    debugger
+    // debugger
     authAPI.updateUser(name)
         .then((res) => {
-            debugger
             dispatch(updateUsertAC(name));
             dispatch(setAppStatusAC('succeeded'))
         })
 }
+export const forgotPasswordTC = (email:string) => (dispatch: Dispatch,getState: () => AppRootStateType) => {
+    dispatch(setAppStatusAC('loading'))
+    // debugger
+    authAPI.forgotPassword(email)
+        .then((res) => {
+            debugger
+            dispatch(forgotPasswordtAC(email));
+            dispatch(setAppStatusAC('succeeded'))
+        })
+}
 
-// export const initializeAppTC = () => (dispatch: Dispatch) => {
-//     debugger
-//     dispatch(setAppStatusAC('loading'))
-//     authAPI.me().then(res => {
-//         debugger
-//         if (res.data.resultCode === 0) {
-//             dispatch(setIsInitializedAC(true))
-//             dispatch(setAppStatusAC('succeeded'))
-//         } else {
-//             handleServerAppError(res.data, dispatch);
-//         }
-//     })
-//         .catch((error) => {
-//             handleServerNetworkError(error, dispatch)
-//         })
-//         .finally(()=>{
-//             dispatch(setIsInitializedAC(true))
-//         })
+// export const searchMoviesTC = (query_term: string) => {
+//     return (dispatch: Dispatch<MovieActionsType>, getState: () => AppRootStateType) => {
+//         dispatch(setAppStatusAC('loading'))
+//         let {genre,page} = getState().movies;
+//         // const {query_term} = params
+//         movieAPI.getMovie({query_term, genre,page})
+//             .then((res) => {
+//                 dispatch(setMovieAC(res.movies,res.movie_count))
+//                 dispatch(setAppStatusAC('succeeded'))
+//             })
+//     }
 // }
+
 // types
 type ActionsType =
     | ReturnType<typeof setIsLoggedInAC>
     | ReturnType<typeof setIsRegisteredAC>
     | ReturnType<typeof setIsLoggedOutAC>
     | ReturnType<typeof updateUsertAC>
+    | ReturnType<typeof forgotPasswordtAC>
     | SetAppStatusActionType
     | SetAppErrorActionType
 

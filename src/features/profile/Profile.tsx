@@ -13,15 +13,19 @@ const Profile = () => {
     // @ts-ignore
     const userName = useSelector<AppRootStateType, string >((state) => state.auth.user?.name)
     const dispatch = useDispatch()
-    const [nameFromInput, setNameFromInput] = useState<string>(userName)
+    const [nameFromInput, setNameFromInput] = useState<string>('')
 
     const onClickHandler = () => {
         dispatch(setIsLoggedOutAC())
     }
     const onClickNewNameHandler = () => {
-        debugger
+        // debugger
         dispatch(updateUserTC(nameFromInput))
     }
+    useEffect(() => {
+        userName && setNameFromInput(userName)
+
+    }, [userName])
 
     if (!isLoggedIn) {
         return <Navigate to={'/login'}/>
