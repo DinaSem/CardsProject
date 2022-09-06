@@ -1,10 +1,16 @@
 import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
-import {setEmailAC} from "../Login/auth-reducer";
+import {forgotPasswordTC, setEmailAC} from "../Login/auth-reducer";
 
 const Recovery = () => {
     const[email, setEmail]=useState<string>('')
     const dispatch = useDispatch()
+
+    const onClickHandler = () => {
+        if(email){
+            dispatch(forgotPasswordTC(email))
+        }
+    }
 
     if(email){
         dispatch(setEmailAC(email))
@@ -16,7 +22,8 @@ const Recovery = () => {
                 marginTop: 'auto',
                 maxHeight:'100vh',
                 width: '6em'}}><h1>Recovery page</h1></div>
-            <input value={email} onChange={()=>setEmail(email)}/>
+            <input value={email} onChange={(e)=>setEmail(e.currentTarget.value)}/>
+            <button onClick={onClickHandler}>SEND</button>
         </div>
     );
 };

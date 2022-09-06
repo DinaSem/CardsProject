@@ -30,7 +30,7 @@ export const App = () => {
             <Route path='newpass' element={<NewPassword/>}/>
             <Route path='recovery' element={<Recovery/>}/>
             <Route path='registration' element={<Registration/>}/>
-            <Route path='new-pass' element={<NewPassword/>}/>
+            <Route path='set-new-password/:token' element={<NewPassword/>}/>
             <Route path='test' element={<Test/>}/>
             <Route path='404' element={<Error404/>}/>
             <Route path='*' element={<Navigate to='/404'/>}/>

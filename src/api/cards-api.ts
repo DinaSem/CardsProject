@@ -53,8 +53,9 @@ export const authAPI = {
     forgotPassword(email: string) {
         const payload:ForgotPasswordParamsType={
             email,
-            from: "test-front-admin <d.r.semenovaa@yandex.ru>",
-            message: `<div style="background-color: lime; padding: 15px">password recovery link: <a href='https://DinaSem.github.io/Cards/set-new-password/$token$'>link</a></div>`
+            from: "<d.r.semenova@yandex.ru>",
+            message: `<div style="background-color: lime; padding: 15px">password recovery link: <a href='https://http://localhost:3000/CardsProject#/set-new-password/$token$'>link</a></div>`
+            // message: `<div style="background-color: lime; padding: 15px">password recovery link: <a href='https://DinaSem.github.io/CardsProject/set-new-password/$token$'>link</a></div>`
 
         }
         return instance.post <ForgotPasswordParamsType, AxiosResponse<UniversalResponseType>>('/auth/forgot', payload)
