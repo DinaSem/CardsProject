@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
+import {setEmailAC} from "../Login/auth-reducer";
 
 const Recovery = () => {
     const[email, setEmail]=useState<string>('')
     const dispatch = useDispatch()
 
     if(email){
-        dispatch()
+        dispatch(setEmailAC(email))
     }
     return (
         <div>

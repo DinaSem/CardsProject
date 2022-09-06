@@ -16,18 +16,14 @@ const initialState = {
     isRegistered: false,
     user: null,
     name: '',
-    forgotPasswordData: {
-        email: "", // кому восстанавливать пароль
-        from: "test-front-admin <d.r.semenovaa@yandex.ru>",
-        message: `<div style="background-color: lime; padding: 15px">password recovery link: <a href='http://localhost:3000/#/set-new-password/$token$'>link</a></div>` // хтмп-письмо, вместо $token$ бэк вставит токен
-    }
+    email:''
 }
 type InitialStateType = {
     user: UserDataResponseType | null,
     isLoggedIn: boolean
     isRegistered: boolean
     name: string
-    forgotPasswordData: ForgotPasswordParamsType
+    email: string
 }
 
 export const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
@@ -44,8 +40,8 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
             }
         case "login/UPDATE-USER":
             return {...state, name: action.name}
-        case "login/FORGOT-PASSWORD":
-            return {...state, forgotPasswordData:{...state.forgotPasswordData, email:action.email}}
+        case "login/SET-EMAIL":
+            return {...state, email:action.email}
         default:
             return state
     }
@@ -59,8 +55,10 @@ export const setIsLoggedOutAC = () =>
     ({type: 'login/SET-IS-LOGGED-OUT'} as const)
 export const updateUsertAC = (name: string) =>
     ({type: 'login/UPDATE-USER', name} as const)
-export const forgotPasswordtAC = (email: string) =>
-    ({type: 'login/FORGOT-PASSWORD', email} as const)
+export const setEmailAC = (email: string) =>
+    ({type: 'login/SET-EMAIL', email} as const)
+export const setNewPasswordAC = (email: string) =>
+    ({type: 'login/SET-NEW-PASSWORD', email} as const)
 
 
 // thunks
@@ -116,29 +114,17 @@ export const updateUserTC = (name: string) => (dispatch: Dispatch) => {
             dispatch(setAppStatusAC('succeeded'))
         })
 }
-export const forgotPasswordTC = (email:string) => (dispatch: Dispatch,getState: () => AppRootStateType) => {
+export const forgotPasswordTC = (email:string) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     // debugger
     authAPI.forgotPassword(email)
         .then((res) => {
             debugger
-            dispatch(forgotPasswordtAC(email));
+            dispatch(setEmailAC(email));
             dispatch(setAppStatusAC('succeeded'))
         })
 }
 
-// export const searchMoviesTC = (query_term: string) => {
-//     return (dispatch: Dispatch<MovieActionsType>, getState: () => AppRootStateType) => {
-//         dispatch(setAppStatusAC('loading'))
-//         let {genre,page} = getState().movies;
-//         // const {query_term} = params
-//         movieAPI.getMovie({query_term, genre,page})
-//             .then((res) => {
-//                 dispatch(setMovieAC(res.movies,res.movie_count))
-//                 dispatch(setAppStatusAC('succeeded'))
-//             })
-//     }
-// }
 
 // types
 type ActionsType =
@@ -146,7 +132,8 @@ type ActionsType =
     | ReturnType<typeof setIsRegisteredAC>
     | ReturnType<typeof setIsLoggedOutAC>
     | ReturnType<typeof updateUsertAC>
-    | ReturnType<typeof forgotPasswordtAC>
+    | ReturnType<typeof setEmailAC>
+    | ReturnType<typeof setNewPasswordAC>
     | SetAppStatusActionType
     | SetAppErrorActionType
 
