@@ -17,6 +17,7 @@ const Navbar = () => {
             <NavLink to={{pathname:'recovery'}}>Recovery</NavLink>
             <Link to={'registration'}>Registration</Link>
             <Link to={'test'}>Test</Link>
+            <Link to={'set-new-password/:token'}>NewPassword</Link>
             <Link to={{pathname:'404'}}>Error404</Link>
         </div>
     );

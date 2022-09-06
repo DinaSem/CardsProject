@@ -54,14 +54,14 @@ export const authAPI = {
         const payload:ForgotPasswordParamsType={
             email,
             from: "<d.r.semenova@yandex.ru>",
-            message: `<div style="background-color: lime; padding: 15px">password recovery link: <a href='https://http://localhost:3000/CardsProject#/set-new-password/$token$'>link</a></div>`
-            // message: `<div style="background-color: lime; padding: 15px">password recovery link: <a href='https://DinaSem.github.io/CardsProject/set-new-password/$token$'>link</a></div>`
+            message: `<div style="background-color: lime; padding: 15px">password recovery link: <a href='http://localhost:3000/CardsProject#/set-new-password/$token$'>link</a></div>`
+            // message: `<div style="background-color: lime; padding: 15px">password recovery link: <a href='https://DinaSem.github.io/CardsProject#/set-new-password/$token$'>link</a></div>`
 
         }
         return instance.post <ForgotPasswordParamsType, AxiosResponse<UniversalResponseType>>('/auth/forgot', payload)
     },
-    newPassword(data: NewtPasswordParamsType) {
-        return instance.post <NewtPasswordParamsType, AxiosResponse<UniversalResponseType>>('/auth/set-new-password', data)
+    newPassword(password:string,resetPasswordToken: string) {
+        return instance.post<{password:string,resetPasswordToken: string}, AxiosResponse<UniversalResponseType>>('/auth/set-new-password', {password,resetPasswordToken})
     },
 }
 

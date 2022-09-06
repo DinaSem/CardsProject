@@ -16,7 +16,8 @@ const initialState = {
     isRegistered: false,
     user: null,
     name: '',
-    email:''
+    email:'',
+    password:''
 }
 type InitialStateType = {
     user: UserDataResponseType | null,
@@ -24,6 +25,7 @@ type InitialStateType = {
     isRegistered: boolean
     name: string
     email: string
+    password: string
 }
 
 export const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
@@ -57,8 +59,8 @@ export const updateUsertAC = (name: string) =>
     ({type: 'login/UPDATE-USER', name} as const)
 export const setEmailAC = (email: string) =>
     ({type: 'login/SET-EMAIL', email} as const)
-export const setNewPasswordAC = (email: string) =>
-    ({type: 'login/SET-NEW-PASSWORD', email} as const)
+export const setNewPasswordAC = (password: string) =>
+    ({type: 'login/SET-NEW-PASSWORD', password} as const)
 
 
 // thunks
@@ -84,6 +86,7 @@ export const logOutTC = () => (dispatch: Dispatch) => {
             handleServerNetworkError(error, dispatch)
         })
 }
+
 export const registerTC = (data: RegisterParamsType) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     authAPI.register(data).then((res) => {
@@ -121,6 +124,15 @@ export const forgotPasswordTC = (email:string) => (dispatch: Dispatch) => {
         .then((res) => {
             debugger
             dispatch(setEmailAC(email));
+            dispatch(setAppStatusAC('succeeded'))
+        })
+}
+export const setNewPasswordTC = (password:string,resetPasswordToken: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+    // debugger
+    authAPI.newPassword(password,resetPasswordToken)
+        .then((res) => {
+            debugger
             dispatch(setAppStatusAC('succeeded'))
         })
 }

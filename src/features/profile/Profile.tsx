@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {setIsLoggedOutAC, updateUserTC} from "../Login/auth-reducer";
+import {logOutTC, setIsLoggedOutAC, updateUserTC} from "../Login/auth-reducer";
 import {Navigate} from "react-router-dom";
 import {AppRootStateType} from "../../app/store";
 import {UserDataResponseType} from "../../api/cards-api";
@@ -16,7 +16,7 @@ const Profile = () => {
     const [nameFromInput, setNameFromInput] = useState<string>('')
 
     const onClickHandler = () => {
-        dispatch(setIsLoggedOutAC())
+        dispatch(logOutTC())
     }
     const onClickNewNameHandler = () => {
         // debugger
