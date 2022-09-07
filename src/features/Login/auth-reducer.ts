@@ -17,7 +17,8 @@ const initialState = {
     user: null,
     name: '',
     email:'',
-    password:''
+    password:'',
+    sent:false
 }
 type InitialStateType = {
     user: UserDataResponseType | null,
@@ -26,6 +27,7 @@ type InitialStateType = {
     name: string
     email: string
     password: string
+    sent:boolean
 }
 
 export const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
@@ -44,6 +46,8 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
             return {...state, name: action.name}
         case "login/SET-EMAIL":
             return {...state, email:action.email}
+        case "login/EMAIL-HAS-BEEN-SENT":
+            return {...state, sent:action.sent}
         default:
             return state
     }
@@ -61,6 +65,8 @@ export const setEmailAC = (email: string) =>
     ({type: 'login/SET-EMAIL', email} as const)
 export const setNewPasswordAC = (password: string) =>
     ({type: 'login/SET-NEW-PASSWORD', password} as const)
+export const emailHasBeenSent = (sent: boolean) =>
+    ({type: 'login/EMAIL-HAS-BEEN-SENT', sent} as const)
 
 
 // thunks
@@ -123,7 +129,8 @@ export const forgotPasswordTC = (email:string) => (dispatch: Dispatch) => {
     authAPI.forgotPassword(email)
         .then((res) => {
             debugger
-            dispatch(setEmailAC(email));
+            dispatch(setEmailAC(email))
+            dispatch(emailHasBeenSent(true))
             dispatch(setAppStatusAC('succeeded'))
         })
 }
@@ -146,6 +153,7 @@ type ActionsType =
     | ReturnType<typeof updateUsertAC>
     | ReturnType<typeof setEmailAC>
     | ReturnType<typeof setNewPasswordAC>
+    | ReturnType<typeof emailHasBeenSent>
     | SetAppStatusActionType
     | SetAppErrorActionType
 

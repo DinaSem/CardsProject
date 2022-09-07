@@ -63,9 +63,9 @@ export const Registration = () => {
     }
     return <form onSubmit={formik.handleSubmit}>
         <Grid container justifyContent={'center'}>
-            <Grid item justifyContent={'center'}>
+            <Grid item justifyContent={'center'} style={{ textAlign:'center', border: '0.1px solid lightGrey', padding:'33px', backgroundColor: 'white', borderRadius: '10px'}}>
+                <h2>Sign Up</h2>
                 <FormControl>
-
                     <FormGroup>
                         <TextField label="Email"
                                    margin="normal"

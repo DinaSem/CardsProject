@@ -55,9 +55,17 @@ export const Login = () => {
         } else return
     }, [navigate, isLoggedIn])
 
-    return <form onSubmit={formik.handleSubmit}>
+    return <form onSubmit={formik.handleSubmit} >
         <Grid container justifyContent={'center'}>
-            <Grid item justifyContent={'center'}>
+            <Grid item justifyContent={'center'} style={{
+                textAlign:'center',
+                border: '0.1px solid lightGrey',
+                padding: '33px',
+                backgroundColor: 'white',
+                borderRadius: '10px',
+                maxWidth:'413px'
+            }}>
+                <h1>Sign in</h1>
                 <FormControl>
                     <FormGroup>
                         <TextField label="Email"
@@ -77,9 +85,6 @@ export const Login = () => {
                                           control={<Checkbox
                                               checked={formik.values.rememberMe}
                                               {...formik.getFieldProps('rememberMe')}/>}/>
-                        {/*<FormLabel>*/}
-                        {/*        <Link to={'recovery'}>Забыли пароль?</Link>*/}
-                        {/*</FormLabel>*/}
                         <div>
                             <Link to={'/recovery'}>Forgot Password</Link>
                         </div>
@@ -87,7 +92,7 @@ export const Login = () => {
                         <Button type={'submit'} variant={'contained'} color={'primary'}>
                             Login
                         </Button>
-                        <h6>Already have an account?</h6>
+                        <h6>Already haven't an account?</h6>
                         <div>
                             <Link to={'/registration'}>Sign Up</Link>
                         </div>
