@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import {useAppDispatch, useAppSelector} from "../../components/hooks";
 import {useEffect} from "react";
 import {setPacksTC} from "../../bll/packs-reducer";
+import SuperDoubleRangeFronEnternet from "../../components/SuperDoubleRange/SuperDoubleRangeFronEnternet";
 
 
 export const PacksTable = () => {
@@ -35,13 +36,23 @@ export const PacksTable = () => {
                     <button>My</button>
                     <button>All</button>
                 </div>
+                <SuperDoubleRangeFronEnternet
+                min={0}
+                max={100}
+                onChange={({ min, max }: { min: number; max: number }) =>
+                    console.log(`min = ${min}, max = ${max}`)
+                }
+            />
             </div>
+            
+
         <div style={{maxWidth:'65%', justifyContent:'space-around', display:'flex',position: 'relative',left: '18%'}}>
 
             <TableContainer component={Paper}>
             <Table style={{ left: '50%',top: '50%'}}
-             sx={{maxWidth: 900}} aria-label="simple table">
-                <TableHead>
+             // sx={{maxWidth: 900}}
+                   aria-label="simple table">
+                <TableHead style={{backgroundColor:'#EFEFEF'}}>
                     <TableRow>
                         <TableCell>Name</TableCell>
                         <TableCell align="center">Cards</TableCell>
@@ -62,7 +73,11 @@ export const PacksTable = () => {
                             <TableCell align="right">{pack.cardsCount}</TableCell>
                             <TableCell align="right">{pack.created}</TableCell>
                             <TableCell align="right">{pack.updated}</TableCell>
-                            <TableCell align="right">{pack.user_id}</TableCell>
+                            <TableCell align="right">
+                                <button>learn</button>
+                                <button>edit</button>
+                                <button>delete</button>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
