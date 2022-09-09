@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import TextField from '@mui/material/TextField';
-import {updateUserTC} from "../../features/Login/auth-reducer";
+import {updateUserTC} from "../../bll/auth-reducer";
 import {useDispatch} from "react-redux";
 
 type EditableSpanPropsType = {

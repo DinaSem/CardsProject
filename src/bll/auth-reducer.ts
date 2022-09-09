@@ -1,14 +1,12 @@
 import {Dispatch} from 'redux'
-import {SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from '../../app/app-reducer'
+import {SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from './app-reducer'
 import {
-    authAPI, ForgotPasswordParamsType,
+    authAPI,
     LoginParamsType,
-    RegisterParamsType, UpdateUserParamsType,
-    UpdateUserResponseType,
+    RegisterParamsType,
     UserDataResponseType
-} from "../../api/cards-api";
-import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
-import {AppRootStateType} from "../../app/store";
+} from "../dal/cards-login-api";
+import { handleServerNetworkError} from "../utils/error-utils";
 
 
 const initialState = {
@@ -30,7 +28,7 @@ type InitialStateType = {
     sent:boolean
 }
 
-export const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
+export const authReducer = (state: InitialStateType = initialState, action: AuthActionsType): InitialStateType => {
     switch (action.type) {
         case 'login/SET-IS-LOGGED-IN':
             return {...state, user: action.payload, isLoggedIn: true}
@@ -84,7 +82,8 @@ export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
 export const logOutTC = () => (dispatch: Dispatch) => {
     // debugger
     dispatch(setAppStatusAC('loading'))
-    authAPI.logout().then((res) => {
+    authAPI.logout()
+        .then(() => {
         dispatch(setIsLoggedOutAC())
         dispatch(setAppStatusAC('succeeded'))
     })
@@ -95,7 +94,8 @@ export const logOutTC = () => (dispatch: Dispatch) => {
 
 export const registerTC = (data: RegisterParamsType) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
-    authAPI.register(data).then((res) => {
+    authAPI.register(data)
+        .then(() => {
         dispatch(setIsRegisteredAC(true))
         dispatch(setAppStatusAC('succeeded'))
     })
@@ -118,7 +118,7 @@ export const updateUserTC = (name: string) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     // debugger
     authAPI.updateUser(name)
-        .then((res) => {
+        .then(() => {
             dispatch(updateUsertAC(name));
             dispatch(setAppStatusAC('succeeded'))
         })
@@ -127,7 +127,7 @@ export const forgotPasswordTC = (email:string) => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     // debugger
     authAPI.forgotPassword(email)
-        .then((res) => {
+        .then(() => {
             debugger
             dispatch(setEmailAC(email))
             dispatch(emailHasBeenSent(true))
@@ -138,15 +138,14 @@ export const setNewPasswordTC = (password:string,resetPasswordToken: string) => 
     dispatch(setAppStatusAC('loading'))
     // debugger
     authAPI.newPassword(password,resetPasswordToken)
-        .then((res) => {
-            debugger
+        .then(() => {
             dispatch(setAppStatusAC('succeeded'))
         })
 }
 
 
 // types
-type ActionsType =
+export type AuthActionsType =
     | ReturnType<typeof setIsLoggedInAC>
     | ReturnType<typeof setIsRegisteredAC>
     | ReturnType<typeof setIsLoggedOutAC>

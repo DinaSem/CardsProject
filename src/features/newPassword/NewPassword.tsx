@@ -1,34 +1,21 @@
 import React from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {setNewPasswordTC} from "../Login/auth-reducer";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {setNewPasswordTC} from "../../bll/auth-reducer";
+import { useParams} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import {AppRootStateType} from "../../app/store";
+
 import {useFormik} from "formik";
 
 type FormikErrorType = {
     password?: string
 }
 const NewPassword = () => {
-//     const[password, setPassword]=useState<string>('')
-//     const dispatch = useDispatch()
-//     const param = useParams<'token'>()
-//     const resetPasswordToken = param.token
-//
-//     const onClickHandler = useCallback(() => {
-//         if(resetPasswordToken){
-//             dispatch(setNewPasswordTC(password,resetPasswordToken))
-//         }},[dispatch, password, resetPasswordToken])
-// console.log('password',password)
-// console.log('resetPasswordToken',resetPasswordToken)
 
-    const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.auth.isLoggedIn)
     const dispatch = useDispatch()
-    const navigate = useNavigate()
     const param = useParams<'token'>()
     const resetPasswordToken = param.token
 
@@ -52,11 +39,6 @@ const NewPassword = () => {
             formik.resetForm()
         },
     })
-    // useEffect(() => {
-    //     if (isLoggedIn) {
-    //         navigate('/')
-    //     } else return
-    // }, [navigate, isLoggedIn])
 
     return (<form onSubmit={formik.handleSubmit}>
             <Grid container justifyContent={'center'}>

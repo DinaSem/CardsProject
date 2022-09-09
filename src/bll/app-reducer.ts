@@ -1,13 +1,10 @@
-import {Dispatch} from "redux";
-import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
-
 const initialState: InitialStateType = {
     status: 'idle',
     error: null,
     isInitialized:false
 }
 
-export const appReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
+export const appReducer = (state: InitialStateType = initialState, action: AppActionsType): InitialStateType => {
     switch (action.type) {
         case 'APP/SET-STATUS':
             return {...state, status: action.status}
@@ -39,7 +36,7 @@ export const setAppStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-ST
 export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
 export type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
 
-type ActionsType =
+export type AppActionsType =
     | ReturnType<typeof setIsInitializedAC>
     | SetAppErrorActionType
     | SetAppStatusActionType

@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {forgotPasswordTC, logOutTC, setIsLoggedOutAC, updateUserTC} from "../Login/auth-reducer";
-import {Link, Navigate, useNavigate} from "react-router-dom";
-import {AppRootStateType} from "../../app/store";
-import {UserDataResponseType} from "../../api/cards-api";
+import {logOutTC} from "../../bll/auth-reducer";
+import { Navigate} from "react-router-dom";
+import {AppRootStateType} from "../../bll/store";
 import {EditableSpan} from '../../components/EditableSpan/EditableSpan';
-import TextField from "@mui/material/TextField";
 import {useFormik} from "formik";
 import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
@@ -13,9 +11,6 @@ import FormGroup from "@mui/material/FormGroup";
 import Button from "@mui/material/Button";
 import avatar from '../../images/avatar.jpg'
 
-type FormikErrorType = {
-
-}
 
 const Profile = () => {
     const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.auth.isLoggedIn)

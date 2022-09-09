@@ -1,15 +1,13 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {forgotPasswordTC, loginTC, setEmailAC} from "../Login/auth-reducer";
+import {forgotPasswordTC} from "../../bll/auth-reducer";
 import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import {Link, Navigate, useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Button from "@mui/material/Button";
-import {AppRootStateType} from "../../app/store";
+import {AppRootStateType} from "../../bll/store";
 import {useFormik} from "formik";
 import email from "../../images/emailPigen.jpg";
 
@@ -55,7 +53,7 @@ const Recovery = () => {
         },
     })
 const backToLoginOnClickHandler = () => {
-    return <Navigate to={'/login'}/>
+    return navigate('/login')
 }
 
     return (<>
@@ -113,7 +111,7 @@ const backToLoginOnClickHandler = () => {
                         <FormControl>
                             <FormGroup>
 
-                                <p>We’ve sent an Email with instructions to example@mail.com</p>
+                                <p>We’ve sent an Email with instructions to {formik.values.email}</p>
 
                                 <Button variant={'contained'} color={'primary'} onClick={backToLoginOnClickHandler}>
                                     Back to login

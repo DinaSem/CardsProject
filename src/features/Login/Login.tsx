@@ -8,9 +8,9 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
-import {loginTC} from "./auth-reducer";
+import {loginTC} from "../../bll/auth-reducer";
 import {Link, useNavigate} from "react-router-dom";
-import {AppRootStateType} from "../../app/store";
+import {AppRootStateType} from "../../bll/store";
 
 type FormikErrorType = {
     email?: string

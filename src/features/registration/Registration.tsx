@@ -1,8 +1,8 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../../app/store";
+import {AppRootStateType} from "../../bll/store";
 import {useFormik} from "formik";
-import {registerTC} from "../Login/auth-reducer";
+import {registerTC} from "../../bll/auth-reducer";
 import {Navigate} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
@@ -27,9 +27,7 @@ export const Registration = () => {
             email: '',
             password: '',
             passwordConfirm: ''
-            // email: "nya-admin@nya.nya",
-            // password: "1qazxcvBG",
-            // passwordConfirm: "1qazxcvBG",
+
         },
         validate: (values) => {
             const errors: FormikErrorType = {}
@@ -89,7 +87,7 @@ export const Registration = () => {
 
 
                         <Button type={'submit'} variant={'contained'} color={'primary'}>
-                            Login
+                            Sign Up
                         </Button>
                     </FormGroup>
                 </FormControl>
