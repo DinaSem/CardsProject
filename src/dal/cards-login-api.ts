@@ -1,10 +1,6 @@
-import axios, {AxiosResponse} from 'axios'
+import {AxiosResponse} from 'axios'
+import {instance} from "./cards-api";
 
-export const instance = axios.create({
-    baseURL: "https://neko-back.herokuapp.com/2.0",
-    // baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/',
-    withCredentials: true,
-})
 
 // api
 export const authAPI = {
@@ -21,7 +17,7 @@ export const authAPI = {
         return instance.delete<UniversalResponseType>(`/auth/me`)
     },
     updateUser(name: string) {
-        return instance.put<{ name: string }, AxiosResponse<ResponseType>>('/auth/me', {name})
+        return instance.put<{ name: string }, UpdateUserResponseType>('/auth/me', {name})
     },
     forgotPassword(email: string) {
         const payload: ForgotPasswordParamsType = {
@@ -63,7 +59,7 @@ export type ResponseRegisterType = {
     error?: string;
 }
 export type UpdateUserResponseType = {
-    updatedUser: {}
+    updatedUser: UserDataResponseType
     error?: string
 }
 export type UniversalResponseType = {

@@ -1,6 +1,5 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {forgotPasswordTC} from "../../bll/auth-reducer";
 import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
@@ -9,28 +8,18 @@ import {Link, useNavigate} from "react-router-dom";
 import Button from "@mui/material/Button";
 import {AppRootStateType} from "../../bll/store";
 import {useFormik} from "formik";
-import email from "../../images/emailPigen.jpg";
+import emailImage from "../../images/emailPigen.jpg";
+import {passwordRecoveryTC} from "../../bll/passwordRecovery-reducer";
 
 
 type FormikErrorType = {
     email?: string
 }
 const Recovery = () => {
-    // const[email, setEmail]=useState<string>('')
-    // const dispatch = useDispatch()
-    //
-    // const onClickHandler = () => {
-    //     if(email){
-    //         dispatch(forgotPasswordTC(email))
-    //     }
-    // }
-    //
-    // if(email){
-    //     dispatch(setEmailAC(email))
-    // }
-    const emailIsSent = useSelector<AppRootStateType, boolean>((state) => state.auth.sent)
+    const emailIsSent = useSelector<AppRootStateType, boolean>((state) => state.recovery.sent)
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const [emailFromInput,setEmailFromInput]=useState('')
 
     const formik = useFormik({
         initialValues: {
@@ -47,7 +36,8 @@ const Recovery = () => {
         },
         onSubmit: values => {
             if (values.email) {
-                dispatch(forgotPasswordTC(values.email))
+                dispatch(passwordRecoveryTC(values.email))
+                setEmailFromInput(values.email)
             }
             formik.resetForm()
         },
@@ -107,11 +97,11 @@ const backToLoginOnClickHandler = () => {
                         justifyContent: 'center'
                     }}>
                         <h2>Check Email</h2>
-                        <img src={email} alt="" style={{borderRadius: '50%', width: '100px'}}/>
+                        <img src={emailImage} alt="" style={{borderRadius: '50%', width: '100px'}}/>
                         <FormControl>
                             <FormGroup>
 
-                                <p>We’ve sent an Email with instructions to {formik.values.email}</p>
+                                <p>We’ve sent an Email with instructions to {emailFromInput}</p>
 
                                 <Button variant={'contained'} color={'primary'} onClick={backToLoginOnClickHandler}>
                                     Back to login

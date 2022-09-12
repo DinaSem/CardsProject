@@ -8,19 +8,34 @@ import Profile from "../profile/Profile";
 import NewPassword from "../newPassword/NewPassword";
 import Recovery from "../recovery/Recovery";
 import {Registration} from "../registration/Registration";
-import Test from "../test/Test";
 import Navbar from "../navbar/Navbar";
 import {useDispatch} from "react-redux";
-import {initializeAppTC} from "../../bll/auth-reducer";
 import {PacksTable} from "../packs-list/packs-table";
+import {useAppDispatch, useAppSelector} from "../../components/hooks";
+import {initializeAppTC, setAppInitializedAC} from "../../bll/app-reducer";
 
 
 
 export const App = () => {
-    const dispatch = useDispatch()
-    useEffect(()=>{
+    const dispatch = useAppDispatch()
+    const isInitialized = useAppSelector((state) => state.app.isInitialized)
+    const error = useAppSelector((state) => state.app.error)
+
+    useEffect(() => {
         dispatch(initializeAppTC())
-    },[dispatch])
+
+        return () => {
+            setAppInitializedAC(false)
+        }
+    }, [])
+    if (!isInitialized) {
+        return (
+            <div style={{ position: 'fixed', top: '30%', textAlign: 'center', width: '100%' }}>
+                <div>ОЖИДАЕМ ИДЕТ СОЕДИНЕНИЕ С СЕРВЕРОМ</div>
+                <p>...is loadig</p>
+            </div>
+        )
+    }
 
     return <div className="App">
         <ErrorSnackbar/>

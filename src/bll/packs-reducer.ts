@@ -1,40 +1,55 @@
 import {Dispatch} from 'redux'
-import {SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from './app-reducer'
+import {setAppStatusAC} from './app-reducer'
 import {handleServerNetworkError} from "../utils/error-utils";
-import {packsAPI, PacksGetRequestDataType, PacksGetRequestType, PacksGetResponseDataType} from "../dal/cards-api";
-import {AppRootStateType, AppThunk} from "./store";
+import {
+    CreatePackRequestType,
+    packsAPI,
+    PacksGetRequestDataType,
+    PacksGetRequestType,
+    PacksGetResponseDataType
+} from "../dal/cards-api";
+import {AppThunk} from "./store";
+import {AuthActionsType, setIsLoggedInAC} from "./auth-reducer";
 
 
 const initialState = {
-    packsData: {}
+    packsData: {},
+    myPacksMode: false,
+    newPack: {
+        cardsPack: {
+            name: "Dina's ",
+            deckCover: "",// не обязателен
+            private: false,// если не отправить будет такой
+        }
+    }
+
 
 } as PacksStateType
 
 type PacksStateType = {
     packsData: PacksGetResponseDataType
-
+    //myPacksId:string
+    myPacksMode: boolean
+    newPack: CreatePackRequestType
 }
 
 export const packsReducer = (state: PacksStateType = initialState, action: PacksActionsType): PacksStateType => {
     switch (action.type) {
         case "packs/SET-PACKS":
             return {...state, packsData: action.packsData}
-        // case 'login/SET-IS-LOGGED-IN':
-        //     return {...state, user: action.payload, isLoggedIn: true}
-        // case "login/SET-IS-REGISTRATED-IN":
-        //     return {...state, isRegistered: action.value}
-        // case "login/SET-IS-LOGGED-OUT":
-        //     return {
-        //         ...state,
-        //         user: null,
-        //         isLoggedIn: false
-        //     }
-        // case "login/UPDATE-USER":
-        //     return {...state, name: action.name}
-        // case "login/SET-EMAIL":
-        //     return {...state, email:action.email}
-        // case "login/EMAIL-HAS-BEEN-SENT":
-        //     return {...state, sent:action.sent}
+        case "packs/SET-MY-PACKS":
+            return {...state, myPacksMode: action.myPacksMode}
+        case "packs/SET-MIN-MAX-VALUE":
+            return {
+                ...state,
+                packsData: {
+                    ...state.packsData,
+                    minCardsCount: action.min,
+                    maxCardsCount: action.max
+                }
+            }
+        case "packs/CREATE-PACK":
+            return {...state, newPack: action.newPack}
         default:
             return state
     }
@@ -43,6 +58,12 @@ export const packsReducer = (state: PacksStateType = initialState, action: Packs
 
 export const setPacksAC = (packsData: PacksGetResponseDataType) =>
     ({type: 'packs/SET-PACKS', packsData} as const)
+export const setMyPacksAC = (myPacksMode: boolean) =>
+    ({type: 'packs/SET-MY-PACKS', myPacksMode} as const)
+export const setMinMaxValueAC = (min: number, max: number) =>
+    ({type: "packs/SET-MIN-MAX-VALUE", min, max} as const)
+export const createNewPackAC = (newPack: CreatePackRequestType) =>
+    ({type: 'packs/CREATE-PACK', newPack} as const)
 // export const setIsRegisteredAC = (value: boolean) =>
 //     ({type: 'login/SET-IS-REGISTRATED-IN', value} as const)
 // export const setIsLoggedOutAC = () =>
@@ -59,22 +80,34 @@ export const setPacksAC = (packsData: PacksGetResponseDataType) =>
 
 // thunks
 
-export const setPacksTC = (packsRequest: PacksGetRequestDataType): AppThunk => (dispatch: Dispatch, getState: () => AppRootStateType) => {
+// export const setPacksTC = (packsRequest: PacksGetRequestDataType): AppThunk => (dispatch: AppDispatch, getState: () => AppRootStateType) => {
+export const setPacksTC = (packsRequest: PacksGetRequestDataType): AppThunk => (dispatch, getState) => {
     // debugger
     dispatch(setAppStatusAC('loading'))
-
     packsAPI.setPacks({
-            packName: packsRequest.packName,
-            min: getState().packs.packsData.minCardsCount,
-            max: getState().packs.packsData.maxCardsCount,
-            sortPacks: packsRequest?.sortPacks,
-            page: getState().packs.packsData.page,
-            pageCount: packsRequest.pageCount,
-            user_id: packsRequest?.user_id,
+        packName: packsRequest.packName,
+        min: getState().packs.packsData.minCardsCount,
+        max: getState().packs.packsData.maxCardsCount,
+        sortPacks: packsRequest?.sortPacks,
+        page: getState().packs.packsData.page,
+        pageCount: packsRequest.pageCount,
+        user_id: packsRequest?.user_id,
     })
 
         .then((res) => {
             dispatch(setPacksAC(res.data))
+            dispatch(setAppStatusAC('succeeded'))
+        })
+        .catch((error) => {
+            handleServerNetworkError(error, dispatch)
+        })
+}
+export const createPacksTC = (newPack: CreatePackRequestType): AppThunk => (dispatch: Dispatch) => {
+    // debugger
+    dispatch(setAppStatusAC('loading'))
+    packsAPI.createPack(newPack)
+        .then((res) => {
+            dispatch(createNewPackAC(res.data))
             console.log(res.data)
             dispatch(setAppStatusAC('succeeded'))
         })
@@ -151,6 +184,12 @@ export const setPacksTC = (packsRequest: PacksGetRequestDataType): AppThunk => (
 // types
 export type PacksActionsType =
     | ReturnType<typeof setPacksAC>
+    | ReturnType<typeof setMyPacksAC>
+    | ReturnType<typeof setMinMaxValueAC>
+    | ReturnType<typeof createNewPackAC>
+    | ReturnType<typeof setIsLoggedInAC>
+    | AuthActionsType
+
 
 
 

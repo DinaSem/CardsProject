@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import Grid from '@mui/material/Grid';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
@@ -8,9 +8,9 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
-import {loginTC} from "../../bll/auth-reducer";
 import {Link, useNavigate} from "react-router-dom";
 import {AppRootStateType} from "../../bll/store";
+import {loginTC} from "../../bll/login-reducer";
 
 type FormikErrorType = {
     email?: string
@@ -49,11 +49,10 @@ export const Login = () => {
             formik.resetForm()
         },
     })
-    useEffect(() => {
+
         if (isLoggedIn) {
             navigate('/')
-        } else return
-    }, [navigate, isLoggedIn])
+        }
 
     return <form onSubmit={formik.handleSubmit} >
         <Grid container justifyContent={'center'}>
@@ -70,6 +69,8 @@ export const Login = () => {
                     <FormGroup>
                         <TextField label="Email"
                                    margin="normal"
+                                   variant="standard"
+                                   id="standard-basic"
                                    {...formik.getFieldProps('email')}
                         />
                         {formik.touched.email && formik.errors.email &&
@@ -77,6 +78,8 @@ export const Login = () => {
                         <TextField type="password"
                                    label="Password"
                                    margin="normal"
+                                   variant="standard"
+                                   id="standard-basic"
                                    {...formik.getFieldProps('password')}
                         />
                         {formik.touched.password && formik.errors.password &&

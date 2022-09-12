@@ -1,15 +1,13 @@
 import React from 'react';
 import {useDispatch} from "react-redux";
-import {setNewPasswordTC} from "../../bll/auth-reducer";
 import { useParams} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-
 import {useFormik} from "formik";
-
+import {setNewPasswordTC} from "../../bll/passwordRecovery-reducer";
 type FormikErrorType = {
     password?: string
 }

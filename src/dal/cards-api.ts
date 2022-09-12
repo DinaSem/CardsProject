@@ -11,6 +11,9 @@ export const packsAPI = {
     setPacks(params: PacksGetRequestDataType) {
         return instance.get<PacksGetRequestDataType,AxiosResponse<PacksGetResponseDataType>>('cards/pack', {params});
     },
+    createPack(params:CreatePackRequestType) {
+        return instance.post<CreatePackRequestType,any>('/cards/pack', params)
+    },
     // createTodolist(title: string) {
     //     return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TodolistType }>>>('todo-lists', {title});
     // },
@@ -47,7 +50,7 @@ export type PacksGetRequestDataType = {
     sortPacks?: number // не обязательно
     page?: number // не обязательно
     pageCount?: number // не обязательно
-    user_id?: number// чьи колоды не обязательно, или прийдут все
+    user_id?: string// чьи колоды не обязательно, или прийдут все
 }
 export type CardPacksType = {
     _id: string
@@ -65,6 +68,20 @@ export type PacksGetResponseDataType = {
     minCardsCount: number
     page: number // выбранная страница
     pageCount: number// количество элементов на странице
+}
+// export type CreatePackRequestType= {
+//     cardsPack: {
+//         name: string, // если не отправить будет таким
+//         deckCover?: string, // не обязателен
+//         private?: boolean// если не отправить будет такой
+//     }
+
+    export type CreatePackRequestType= {
+    cardsPack: {
+        name: string, // если не отправить будет таким
+        deckCover?: string, // не обязателен
+        private?: boolean// если не отправить будет такой
+    }
 }
 export type ResponseType<D = {}> = {
     resultCode: number

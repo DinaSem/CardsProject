@@ -3,12 +3,19 @@ import thunkMiddleware, {ThunkAction, ThunkDispatch} from 'redux-thunk'
 import {AppActionsType, appReducer} from './app-reducer'
 import {AuthActionsType, authReducer} from "./auth-reducer";
 import {PacksActionsType, packsReducer} from "./packs-reducer";
+import {LoginActionsType, loginReducer} from "./login-reducer";
+import {ProfileActionsType, profileReducer} from "./profile-reducer";
+import {passwordRecoveryReducer, PasswordRecoveryType} from "./passwordRecovery-reducer";
 
 export type AppStoreType = ReturnType<typeof rootReducer>
 const rootReducer = combineReducers({
     app: appReducer,
     auth: authReducer,
-    packs: packsReducer
+    packs: packsReducer,
+    login:loginReducer,
+    profile:profileReducer,
+    recovery:passwordRecoveryReducer
+
 })
 // непосредственно создаём store
 export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
@@ -19,6 +26,9 @@ export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, AppActionType
 export type AppActionType = PacksActionsType
     | AuthActionsType
     | AppActionsType
+    | LoginActionsType
+    | ProfileActionsType
+    | PasswordRecoveryType
 
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AppActionType>

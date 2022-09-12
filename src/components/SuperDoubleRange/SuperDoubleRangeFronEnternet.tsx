@@ -8,6 +8,8 @@ import React, {
 } from "react";
 import classnames from "classnames";
 import "./multiRangeSlider.css";
+import {useAppDispatch} from "../hooks";
+import {setMinMaxValueAC} from "../../bll/packs-reducer";
 
 interface MultiRangeSliderProps {
     min: number;
@@ -26,6 +28,7 @@ const SuperDoubleRangeFronEnternet: FC<MultiRangeSliderProps> = ({
     const minValRef = useRef<HTMLInputElement>(null);
     const maxValRef = useRef<HTMLInputElement>(null);
     const range = useRef<HTMLDivElement>(null);
+    const dispatch = useAppDispatch()
 
     // Convert to percentage
     const getPercent = useCallback(
@@ -64,6 +67,10 @@ const SuperDoubleRangeFronEnternet: FC<MultiRangeSliderProps> = ({
         onChange({min: minVal, max: maxVal});
     }, [minVal, maxVal, onChange]);
 
+    useEffect(() => {
+        dispatch(setMinMaxValueAC(minVal,maxVal))
+    }, [dispatch, minVal, maxVal]);
+
     return (
         // eslint-disable-next-line react/react-in-jsx-scope
         <div className="container">
@@ -100,8 +107,8 @@ const SuperDoubleRangeFronEnternet: FC<MultiRangeSliderProps> = ({
             <div className="slider">
                 <div className="slider__track"></div>
                 <div ref={range} className="slider__range"></div>
-                <div className="slider__left-value">{minVal}</div>
-                <div className="slider__right-value">{maxVal}</div>
+                <div style={{color:'black'}} className="slider__left-value">{minVal}</div>
+                <div style={{color:'black'}} className="slider__right-value">{maxVal}</div>
             </div>
         </div>
     );

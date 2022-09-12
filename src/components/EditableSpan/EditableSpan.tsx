@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import TextField from '@mui/material/TextField';
-import {updateUserTC} from "../../bll/auth-reducer";
 import {useDispatch} from "react-redux";
+import {updateUserTC} from "../../bll/profile-reducer";
 
 type EditableSpanPropsType = {
     value: string
@@ -21,7 +21,7 @@ export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
     const activateViewMode = () => {
         setEditMode(false);
         props.onChange(title);
-        dispatch(updateUserTC(title))
+        // dispatch(updateUserTC())починить!!!!
     }
     const changeTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)

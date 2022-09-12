@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {logOutTC} from "../../bll/auth-reducer";
 import { Navigate} from "react-router-dom";
 import {AppRootStateType} from "../../bll/store";
 import {EditableSpan} from '../../components/EditableSpan/EditableSpan';
@@ -10,14 +9,15 @@ import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
 import Button from "@mui/material/Button";
 import avatar from '../../images/avatar.jpg'
+import {logoutTC} from "../../bll/profile-reducer";
 
 
 const Profile = () => {
     const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.auth.isLoggedIn)
     const dispatch = useDispatch()
     // const navigate = useNavigate()
-    const userName = useSelector<AppRootStateType, any>((state) => state.auth.user?.name)
-    const userEmail = useSelector<AppRootStateType, any>((state) => state.auth.user?.email)
+    const userName = useSelector<AppRootStateType, any>((state) => state.profile.user.name)
+    const userEmail = useSelector<AppRootStateType, any>((state) => state.profile.user.email)
     const [nameFromInput, setNameFromInput] = useState<string>('')
 
 
@@ -27,7 +27,7 @@ const Profile = () => {
         validate: (values) => {
         },
         onSubmit: values => {
-            dispatch(logOutTC())
+            dispatch(logoutTC())
         },
     })
 
