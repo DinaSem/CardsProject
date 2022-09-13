@@ -7,11 +7,11 @@ import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import {useFormik} from "formik";
-import {setNewPasswordTC} from "../../bll/passwordRecovery-reducer";
+import {setNewPasswordTC} from "../recovery/passwordRecovery-reducer";
 type FormikErrorType = {
     password?: string
 }
-const NewPassword = () => {
+export const NewPassword = () => {
 
     const dispatch = useDispatch()
     const param = useParams<'token'>()
@@ -74,5 +74,3 @@ const NewPassword = () => {
         </form>
     );
 };
-
-export default NewPassword;

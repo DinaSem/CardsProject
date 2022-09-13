@@ -6,16 +6,16 @@ import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
 import {Link, useNavigate} from "react-router-dom";
 import Button from "@mui/material/Button";
-import {AppRootStateType} from "../../bll/store";
+import {AppRootStateType} from "../../../api/store";
 import {useFormik} from "formik";
-import emailImage from "../../images/emailPigen.jpg";
-import {passwordRecoveryTC} from "../../bll/passwordRecovery-reducer";
+import emailImage from "../../../images/emailPigen.jpg";
+import {passwordRecoveryTC} from "./passwordRecovery-reducer";
 
 
 type FormikErrorType = {
     email?: string
 }
-const Recovery = () => {
+export const Recovery = () => {
     const emailIsSent = useSelector<AppRootStateType, boolean>((state) => state.recovery.sent)
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -116,5 +116,3 @@ const backToLoginOnClickHandler = () => {
         </>
     );
 };
-
-export default Recovery;

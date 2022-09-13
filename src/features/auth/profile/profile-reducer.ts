@@ -1,12 +1,12 @@
-import {setAppErrorAC, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from './app-reducer'
+import {setAppErrorAC, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from '../../app/app-reducer'
 import {
     authAPI,
     UserDataResponseType
-} from "../dal/cards-login-api";
-import {handleServerNetworkError} from "../utils/error-utils";
-import {AppThunk} from "./store";
-import {setIsLoggedInAC} from "./auth-reducer";
-import {setSuccess} from "./login-reducer";
+} from "../../../api/cards-login-api";
+import {handleServerNetworkError} from "../../../utils/error-utils";
+import {AppThunk} from "../../../api/store";
+import {setIsLoggedInAC} from "../registration/auth-reducer";
+import {setSuccess} from "../Login/login-reducer";
 
 const initialState = {
     user: {
@@ -29,11 +29,13 @@ export const setUserAC = (user: UserDataResponseType) =>
 
 // thunks
 export const updateUserTC = (user: UserDataResponseType): AppThunk => (dispatch) => {
+
     dispatch(setAppErrorAC(null))
     dispatch(setAppStatusAC('loading'))
     authAPI.updateUser(user.name)
         .then((res) => {
-            dispatch(setUserAC(res.updatedUser))
+         console.log(res)
+            dispatch(setUserAC(res.data.updatedUser))
             dispatch(setAppStatusAC('succeeded'))
         })
         .catch((error) => {

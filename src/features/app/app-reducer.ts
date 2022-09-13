@@ -1,6 +1,7 @@
-import {AppThunk} from "./store";
-import {setIsLoggedInAC} from "./auth-reducer";
-import {authAPI} from "../dal/cards-login-api";
+import {AppThunk} from "../../api/store";
+import {setIsLoggedInAC} from "../auth/registration/auth-reducer";
+import {authAPI} from "../../api/cards-login-api";
+import {setUserAC} from "../auth/profile/profile-reducer";
 
 const initialState: InitialStateType = {
     status: 'idle',
@@ -27,21 +28,20 @@ export const appReducer = (state: InitialStateType = initialState, action: AppAc
             return {...state}
     }
 }
-
-
+// actions
 export const setAppInitializedAC = (value: boolean) =>
     ({type: 'APP/SET-IS-INITIALIZED-IN', value} as const)
 export const setAppErrorAC = (error: string | null) => ({type: 'APP/SET-ERROR', error} as const)
 export const setAppStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-STATUS', status} as const)
 
-
+// thunks
 export const initializeAppTC = (): AppThunk => async (dispatch) => {
     try {
         dispatch(setAppStatusAC('loading'))
         dispatch(setAppErrorAC(null))
         const res = await authAPI.me()
         dispatch(setIsLoggedInAC(true))
-        //dispatch(setUserAC(res.data))
+        dispatch(setUserAC(res.data))
         dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
         dispatch(setAppStatusAC('failed'))
@@ -49,7 +49,7 @@ export const initializeAppTC = (): AppThunk => async (dispatch) => {
         dispatch(setAppInitializedAC(true))
     }
 }
-
+// types
 export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
 export type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
 

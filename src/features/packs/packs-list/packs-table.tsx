@@ -6,20 +6,21 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import {useAppDispatch, useAppSelector} from "../../components/hooks";
+import {useAppDispatch, useAppSelector} from "../../../components/hooks";
 import {useEffect, useState} from "react";
-import {createPacksTC, setMyPacksAC, setPacksTC} from "../../bll/packs-reducer";
-import SuperDoubleRangeFronEnternet from "../../components/SuperDoubleRange/SuperDoubleRangeFronEnternet";
-import {FormControl, InputLabel, MenuItem, Pagination, Select, SelectChangeEvent} from "@mui/material";
-import SuperSelect from "../../components/SuperSelect/SuperSelect";
+import {createPacksTC, setMyPacksAC, setPacksTC} from "../packs-reducer";
+import {SuperDoubleRangeFronEnternet} from "../../../components/SuperDoubleRange/SuperDoubleRangeFronEnternet";
+import { Pagination} from "@mui/material";
+import SuperSelect from "../../../components/SuperSelect/SuperSelect";
+import FilterAltOffOutlinedIcon from '@mui/icons-material/FilterAltOffOutlined';
 
 
 export const PacksTable = () => {
-    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+    //const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const packs = useAppSelector(state => state.packs.packsData)
     const newPack = useAppSelector(state => state.packs.newPack)
     const myPacksMode = useAppSelector(state => state.packs.myPacksMode)
-    const numberOfPacks = useAppSelector(state => state.packs.packsData.pageCount)
+    //const numberOfPacks = useAppSelector(state => state.packs.packsData.pageCount)
     const dispatch = useAppDispatch()
 
     const packsOnPage = [10, 20, 30]
@@ -105,6 +106,7 @@ export const PacksTable = () => {
                         console.log(`min = ${min}, max = ${max}`)
                     }
                 />
+                <FilterAltOffOutlinedIcon/>
             </div>
 
 

@@ -1,15 +1,14 @@
 import {Dispatch} from 'redux'
-import {setAppStatusAC} from './app-reducer'
-import {handleServerNetworkError} from "../utils/error-utils";
+import {setAppStatusAC} from '../app/app-reducer'
+import {handleServerNetworkError} from "../../utils/error-utils";
 import {
     CreatePackRequestType,
     packsAPI,
     PacksGetRequestDataType,
-    PacksGetRequestType,
     PacksGetResponseDataType
-} from "../dal/cards-api";
-import {AppThunk} from "./store";
-import {AuthActionsType, setIsLoggedInAC} from "./auth-reducer";
+} from "../../api/cards-api";
+import {AppThunk} from "../../api/store";
+import {AuthActionsType, setIsLoggedInAC} from "../auth/registration/auth-reducer";
 
 
 const initialState = {

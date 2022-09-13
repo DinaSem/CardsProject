@@ -9,7 +9,7 @@ import React, {
 import classnames from "classnames";
 import "./multiRangeSlider.css";
 import {useAppDispatch} from "../hooks";
-import {setMinMaxValueAC} from "../../bll/packs-reducer";
+import {setMinMaxValueAC} from "../../features/packs/packs-reducer";
 
 interface MultiRangeSliderProps {
     min: number;
@@ -18,7 +18,7 @@ interface MultiRangeSliderProps {
 }
 
 // Читать здесь https://dev.to/sandra_lewis/building-a-multi-range-slider-in-react-from-scratch-4dl1
-const SuperDoubleRangeFronEnternet: FC<MultiRangeSliderProps> = ({
+export const SuperDoubleRangeFronEnternet: FC<MultiRangeSliderProps> = ({
                                                                      min,
                                                                      max,
                                                                      onChange
@@ -105,8 +105,8 @@ const SuperDoubleRangeFronEnternet: FC<MultiRangeSliderProps> = ({
             />
 
             <div className="slider">
-                <div className="slider__track"></div>
-                <div ref={range} className="slider__range"></div>
+                <div className="sliderTrack"> </div>
+                <div ref={range} className="sliderRange"> </div>
                 <div style={{color:'black'}} className="slider__left-value">{minVal}</div>
                 <div style={{color:'black'}} className="slider__right-value">{maxVal}</div>
             </div>
@@ -114,4 +114,3 @@ const SuperDoubleRangeFronEnternet: FC<MultiRangeSliderProps> = ({
     );
 };
 
-export default SuperDoubleRangeFronEnternet;

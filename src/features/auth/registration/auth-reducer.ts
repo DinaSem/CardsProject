@@ -1,7 +1,7 @@
 import {Dispatch} from 'redux'
-import {setAppErrorAC, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from './app-reducer'
-import {authAPI, RegisterParamsType,} from "../dal/cards-login-api";
-import { handleServerNetworkError} from "../utils/error-utils";
+import {setAppErrorAC, SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from '../../app/app-reducer'
+import {authAPI, RegisterParamsType,} from "../../../api/cards-login-api";
+import { handleServerNetworkError} from "../../../utils/error-utils";
 
 const initialState = {
     isLoggedIn: false,

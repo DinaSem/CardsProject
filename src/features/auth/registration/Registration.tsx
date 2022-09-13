@@ -1,16 +1,14 @@
 import React from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../../bll/store";
+import {useDispatch} from "react-redux";
 import {useFormik} from "formik";
-import {registerTC} from "../../bll/auth-reducer";
+import {registerTC} from "./auth-reducer";
 import {Navigate} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
-
 import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
-
 import Button from "@mui/material/Button";
+import {useAppSelector} from "../../../components/hooks";
 
 type FormikErrorType = {
     email?: string
@@ -19,7 +17,7 @@ type FormikErrorType = {
 }
 
 export const Registration = () => {
-    const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.auth.isLoggedIn)
+    const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn)
     const dispatch = useDispatch()
 
     const formik = useFormik({

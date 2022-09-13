@@ -17,7 +17,7 @@ export const authAPI = {
         return instance.delete<UniversalResponseType>(`/auth/me`)
     },
     updateUser(name: string) {
-        return instance.put<{ name: string }, UpdateUserResponseType>('/auth/me', {name})
+        return instance.put<{name: string}, AxiosResponse<UpdateUserResponseType>>('/auth/me', {name})
     },
     forgotPassword(email: string) {
         const payload: ForgotPasswordParamsType = {
