@@ -11,6 +11,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Link, useNavigate} from "react-router-dom";
 import {AppRootStateType} from "../../../api/store";
 import {loginTC} from "./login-reducer";
+import s from './login.module.css'
 
 type FormikErrorType = {
     email?: string
@@ -30,7 +31,7 @@ export const Login = () => {
 
         },
         validate: (values) => {
-            const errors: FormikErrorType = {}
+            let errors: FormikErrorType = {}
             if (!values.email) {
                 errors.email = 'Требуется email'
             } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
@@ -56,14 +57,7 @@ export const Login = () => {
 
     return <form onSubmit={formik.handleSubmit} >
         <Grid container justifyContent={'center'}>
-            <Grid item justifyContent={'center'} style={{
-                textAlign:'center',
-                border: '0.1px solid lightGrey',
-                padding: '33px',
-                backgroundColor: 'white',
-                borderRadius: '10px',
-                maxWidth:'413px'
-            }}>
+            <Grid className={s.card} style={{marginTop:'60px'}} item justifyContent={'center'} >
                 <h1>Sign in</h1>
                 <FormControl>
                     <FormGroup>
@@ -72,6 +66,7 @@ export const Login = () => {
                                    variant="standard"
                                    id="standard-basic"
                                    {...formik.getFieldProps('email')}
+                                   style={{minWidth: '347px', marginTop:'41px'}}
                         />
                         {formik.touched.email && formik.errors.email &&
                         <div style={{color: 'red'}}>{formik.errors.email}</div>}
@@ -87,17 +82,19 @@ export const Login = () => {
                         <FormControlLabel label={'Remember me'}
                                           control={<Checkbox
                                               checked={formik.values.rememberMe}
-                                              {...formik.getFieldProps('rememberMe')}/>}/>
-                        <div>
-                            <Link to={'/recovery'}>Forgot Password</Link>
+                                              {...formik.getFieldProps('rememberMe')}/>}
+                                          style={{marginTop: '24px'}}
+                        />
+                        <div style={{textAlign: 'end',marginTop:'29px'}}>
+                            <Link to={'/recovery'}>Forgot Password?</Link>
                         </div>
 
-                        <Button type={'submit'} variant={'contained'} color={'primary'}>
+                        <Button type={'submit'} variant={'contained'} color={'primary'}  style={{marginTop:'69px', borderRadius:'30px'}}>
                             Login
                         </Button>
                         <h6>Already haven't an account?</h6>
                         <div>
-                            <Link to={'/registration'}>Sign Up</Link>
+                            <Link to={'/registration'} className={s.signUp} >Sign Up</Link>
                         </div>
                     </FormGroup>
                 </FormControl>

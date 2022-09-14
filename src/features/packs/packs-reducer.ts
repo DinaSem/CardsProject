@@ -12,6 +12,8 @@ import {AuthActionsType, setIsLoggedInAC} from "../auth/registration/auth-reduce
 
 
 const initialState = {
+    packNameSearch:'',
+    user_id:'',
     packsData: {},
     myPacksMode: false,
     newPack: {
@@ -20,16 +22,18 @@ const initialState = {
             deckCover: "",// не обязателен
             private: false,// если не отправить будет такой
         }
-    }
+    },
+
 
 
 } as PacksStateType
 
 type PacksStateType = {
     packsData: PacksGetResponseDataType
-    //myPacksId:string
     myPacksMode: boolean
     newPack: CreatePackRequestType
+    packNameSearch:string
+    user_id:string
 }
 
 export const packsReducer = (state: PacksStateType = initialState, action: PacksActionsType): PacksStateType => {
@@ -37,7 +41,7 @@ export const packsReducer = (state: PacksStateType = initialState, action: Packs
         case "packs/SET-PACKS":
             return {...state, packsData: action.packsData}
         case "packs/SET-MY-PACKS":
-            return {...state, myPacksMode: action.myPacksMode}
+            return {...state, user_id: action.user_id}
         case "packs/SET-MIN-MAX-VALUE":
             return {
                 ...state,
@@ -49,6 +53,8 @@ export const packsReducer = (state: PacksStateType = initialState, action: Packs
             }
         case "packs/CREATE-PACK":
             return {...state, newPack: action.newPack}
+        case "packs/SET-PACK-NAME-FOR-SEARCH":
+            return {...state, packNameSearch: action.packNameSearch}
         default:
             return state
     }
@@ -57,40 +63,29 @@ export const packsReducer = (state: PacksStateType = initialState, action: Packs
 
 export const setPacksAC = (packsData: PacksGetResponseDataType) =>
     ({type: 'packs/SET-PACKS', packsData} as const)
-export const setMyPacksAC = (myPacksMode: boolean) =>
-    ({type: 'packs/SET-MY-PACKS', myPacksMode} as const)
 export const setMinMaxValueAC = (min: number, max: number) =>
     ({type: "packs/SET-MIN-MAX-VALUE", min, max} as const)
+export const setPackNameForSearchAC = (packNameSearch:string) =>
+    ({type: "packs/SET-PACK-NAME-FOR-SEARCH", packNameSearch} as const)
+export const setMyPacksAC = (user_id:string) =>
+    ({type: "packs/SET-MY-PACKS", user_id} as const)
 export const createNewPackAC = (newPack: CreatePackRequestType) =>
     ({type: 'packs/CREATE-PACK', newPack} as const)
-// export const setIsRegisteredAC = (value: boolean) =>
-//     ({type: 'login/SET-IS-REGISTRATED-IN', value} as const)
-// export const setIsLoggedOutAC = () =>
-//     ({type: 'login/SET-IS-LOGGED-OUT'} as const)
-// export const updateUsertAC = (name: string) =>
-//     ({type: 'login/UPDATE-USER', name} as const)
-// export const setEmailAC = (email: string) =>
-//     ({type: 'login/SET-EMAIL', email} as const)
-// export const setNewPasswordAC = (password: string) =>
-//     ({type: 'login/SET-NEW-PASSWORD', password} as const)
-// export const emailHasBeenSent = (sent: boolean) =>
-//     ({type: 'login/EMAIL-HAS-BEEN-SENT', sent} as const)
 
 
 // thunks
 
-// export const setPacksTC = (packsRequest: PacksGetRequestDataType): AppThunk => (dispatch: AppDispatch, getState: () => AppRootStateType) => {
-export const setPacksTC = (packsRequest: PacksGetRequestDataType): AppThunk => (dispatch, getState) => {
+export const setPacksTC = (packsData: PacksGetRequestDataType): AppThunk => (dispatch, getState) => {
     // debugger
     dispatch(setAppStatusAC('loading'))
     packsAPI.setPacks({
-        packName: packsRequest.packName,
+        packName: getState().packs.packNameSearch,
         min: getState().packs.packsData.minCardsCount,
         max: getState().packs.packsData.maxCardsCount,
-        sortPacks: packsRequest?.sortPacks,
+        sortPacks: packsData?.sortPacks,
         page: getState().packs.packsData.page,
-        pageCount: packsRequest.pageCount,
-        user_id: packsRequest?.user_id,
+        pageCount: packsData.pageCount,
+        user_id: getState().packs.user_id,
     })
 
         .then((res) => {
@@ -183,10 +178,11 @@ export const createPacksTC = (newPack: CreatePackRequestType): AppThunk => (disp
 // types
 export type PacksActionsType =
     | ReturnType<typeof setPacksAC>
-    | ReturnType<typeof setMyPacksAC>
     | ReturnType<typeof setMinMaxValueAC>
     | ReturnType<typeof createNewPackAC>
     | ReturnType<typeof setIsLoggedInAC>
+    | ReturnType<typeof setPackNameForSearchAC>
+    | ReturnType<typeof setMyPacksAC>
     | AuthActionsType
 
 

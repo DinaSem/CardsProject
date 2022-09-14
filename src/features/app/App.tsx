@@ -9,7 +9,7 @@ import {NewPassword} from "../auth/newPassword/NewPassword";
 import {Recovery} from "../auth/recovery/Recovery";
 import {Registration} from "../auth/registration/Registration";
 import {Navbar} from "../navbar/Navbar";
-import {PacksTable} from "../packs/packs-list/packs-table";
+import {PacksTable} from "../packs/paclk-table/packs-table";
 import {useAppDispatch, useAppSelector} from "../../components/hooks";
 import {initializeAppTC, setAppInitializedAC} from "./app-reducer";
 

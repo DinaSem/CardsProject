@@ -8,73 +8,39 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {useAppDispatch, useAppSelector} from "../../../components/hooks";
 import {useEffect, useState} from "react";
-import {createPacksTC, setMyPacksAC, setPacksTC} from "../packs-reducer";
+import {createPacksTC, setPacksTC} from "../packs-reducer";
 import {SuperDoubleRangeFronEnternet} from "../../../components/SuperDoubleRange/SuperDoubleRangeFronEnternet";
 import { Pagination} from "@mui/material";
 import SuperSelect from "../../../components/SuperSelect/SuperSelect";
 import FilterAltOffOutlinedIcon from '@mui/icons-material/FilterAltOffOutlined';
+import {PackSearch} from "../pack-search/PackSearch";
+import {MyAllPacksSwitch} from "../pack-My-All/MyAllPacksSwitch";
 
 
 export const PacksTable = () => {
     //const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const packs = useAppSelector(state => state.packs.packsData)
+    const packNameSearch = useAppSelector(state => state.packs.packNameSearch)
     const newPack = useAppSelector(state => state.packs.newPack)
-    const myPacksMode = useAppSelector(state => state.packs.myPacksMode)
-    //const numberOfPacks = useAppSelector(state => state.packs.packsData.pageCount)
-    const dispatch = useAppDispatch()
+    const myPackId = useAppSelector(state => state.packs.user_id)
 
+    const dispatch = useAppDispatch()
     const packsOnPage = [10, 20, 30]
     const [valueFromSelect, onChangeOption] = useState(packsOnPage[1])
-    const [inputValue, setInputValue] = useState('')
 
-
-    const setMyPacksOnClickHandler = () => {
-        dispatch(setMyPacksAC(true))
-    }
-    const setAllPacksOnClickHandler = () => {
-        dispatch(setMyPacksAC(false))
-    }
-
-    // useEffect(() => {
-    //     dispatch(setPacksTC({
-    //         pageCount: valueFromSelect,
-    //         packName: inputValue,
-    //         min: packs.minCardsCount,
-    //         max: packs.maxCardsCount,
-    //     }))
-    // }, [dispatch])
 
     useEffect(() => {
-        if(!myPacksMode){
             dispatch(setPacksTC(
                 {
-                    //packName: 'english',
-
                     pageCount: 10,
-                    packName:inputValue,
-                    min: packs.minCardsCount,
-                    max:packs.maxCardsCount,
                 }
             ))
-        }else{
-            dispatch(setPacksTC(
-                {
-                    user_id: '6226057a0373a3000426a62d',
-                    pageCount: 10,
-                    packName:inputValue
-                }
-            ))
-        }
-
-        }, [dispatch,myPacksMode,inputValue,packs.maxCardsCount,packs.minCardsCount]
-    )
-
+        },[dispatch,packs.maxCardsCount,packs.minCardsCount,packNameSearch,myPackId])
 
     const createPackOnClickHandler = () => {
         dispatch(createPacksTC(newPack))
     }
 
-    console.log('inputValue', inputValue)
     return (<>
             <div style={{
                 maxWidth: '65%',
@@ -93,12 +59,8 @@ export const PacksTable = () => {
                 left: '18%',
                 position: 'relative'
             }}>
-                <input value={inputValue} onChange={(e) => setInputValue(e.currentTarget.value)}
-                       placeholder={'Provide your text'} type='text'/>
-                <div>
-                    <button onClick={setMyPacksOnClickHandler}>My</button>
-                    <button onClick={setAllPacksOnClickHandler}>All</button>
-                </div>
+                <PackSearch/>
+                <MyAllPacksSwitch/>
                 <SuperDoubleRangeFronEnternet
                     min={0}
                     max={100}

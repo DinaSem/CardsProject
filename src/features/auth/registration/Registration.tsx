@@ -2,13 +2,14 @@ import React from 'react';
 import {useDispatch} from "react-redux";
 import {useFormik} from "formik";
 import {registerTC} from "./auth-reducer";
-import {Navigate} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import {useAppSelector} from "../../../components/hooks";
+import s from '../Login/login.module.css'
 
 type FormikErrorType = {
     email?: string
@@ -59,19 +60,24 @@ export const Registration = () => {
     }
     return <form onSubmit={formik.handleSubmit}>
         <Grid container justifyContent={'center'}>
-            <Grid item justifyContent={'center'} style={{ textAlign:'center', border: '0.1px solid lightGrey', padding:'33px', backgroundColor: 'white', borderRadius: '10px'}}>
-                <h2>Sign Up</h2>
+            <Grid item justifyContent={'center'} className={s.card} style={{marginTop:'60px'}}>
+                <h1>Sign Up</h1>
                 <FormControl>
                     <FormGroup>
                         <TextField label="Email"
                                    margin="normal"
+                                   variant="standard"
+                                   id="standard-basic"
                                    {...formik.getFieldProps('email')}
+                                   style={{minWidth: '347px', marginTop:'41px'}}
                         />
                         {formik.touched.email && formik.errors.email && <div style={{color: 'red'}}>{formik.errors.email}</div>}
 
                         <TextField type="password"
                                    label="Password"
                                    margin="normal"
+                                   variant="standard"
+                                   id="standard-basic"
                                    {...formik.getFieldProps('password')}
                         />
                         {formik.touched.password && formik.errors.password && <div style={{color: 'red'}}>{formik.errors.password}</div>}
@@ -79,14 +85,20 @@ export const Registration = () => {
                         <TextField type="password"
                                    label="Confirm password"
                                    margin="normal"
+                                   variant="standard"
+                                   id="standard-basic"
                                    {...formik.getFieldProps('passwordConfirm')}
                         />
                         {formik.touched.passwordConfirm && formik.errors.passwordConfirm && <div style={{color: 'red'}}>{formik.errors.passwordConfirm}</div>}
 
 
-                        <Button type={'submit'} variant={'contained'} color={'primary'}>
+                        <Button type={'submit'} variant={'contained'} color={'primary'} style={{marginTop:'69px', borderRadius:'30px'}}>
                             Sign Up
                         </Button>
+                        <h6>Already have account?</h6>
+                        <div>
+                            <Link to={'/login'} className={s.signUp} >Sign In</Link>
+                        </div>
                     </FormGroup>
                 </FormControl>
             </Grid>
