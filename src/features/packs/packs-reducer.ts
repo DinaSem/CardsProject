@@ -14,6 +14,8 @@ import {AuthActionsType, setIsLoggedInAC} from "../auth/registration/auth-reduce
 const initialState = {
     packNameSearch:'',
     user_id:'',
+    min:0,
+    max:100,
     packsData: {},
     myPacksMode: false,
     newPack: {
@@ -34,6 +36,8 @@ type PacksStateType = {
     newPack: CreatePackRequestType
     packNameSearch:string
     user_id:string
+    min:number
+    max:number
 }
 
 export const packsReducer = (state: PacksStateType = initialState, action: PacksActionsType): PacksStateType => {
@@ -45,11 +49,8 @@ export const packsReducer = (state: PacksStateType = initialState, action: Packs
         case "packs/SET-MIN-MAX-VALUE":
             return {
                 ...state,
-                packsData: {
-                    ...state.packsData,
-                    minCardsCount: action.min,
-                    maxCardsCount: action.max
-                }
+                    min: action.min,
+                    max: action.max
             }
         case "packs/CREATE-PACK":
             return {...state, newPack: action.newPack}
@@ -80,8 +81,8 @@ export const setPacksTC = (packsData: PacksGetRequestDataType): AppThunk => (dis
     dispatch(setAppStatusAC('loading'))
     packsAPI.setPacks({
         packName: getState().packs.packNameSearch,
-        min: getState().packs.packsData.minCardsCount,
-        max: getState().packs.packsData.maxCardsCount,
+        min: getState().packs.min,
+        max: getState().packs.max,
         sortPacks: packsData?.sortPacks,
         page: getState().packs.packsData.page,
         pageCount: packsData.pageCount,
@@ -102,7 +103,6 @@ export const createPacksTC = (newPack: CreatePackRequestType): AppThunk => (disp
     packsAPI.createPack(newPack)
         .then((res) => {
             dispatch(createNewPackAC(res.data))
-            console.log(res.data)
             dispatch(setAppStatusAC('succeeded'))
         })
         .catch((error) => {

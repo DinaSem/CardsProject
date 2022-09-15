@@ -17,7 +17,7 @@ export const PackSearch = () => {
 
     return (
         <Box component="form"
-             sx={{'& > :not(style)': {m: 1, width: '25ch'},}}
+             sx={{'& > :not(style)': {width: 300, height:25, marginBottom:3},}}
              noValidate
              autoComplete="off">
             <TextField
@@ -25,6 +25,7 @@ export const PackSearch = () => {
                 label="Provide your text"
                 value={name}
                 onChange={handleChange}
+                style={{height:38}}
             />
         </Box>
     )

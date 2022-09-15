@@ -15,6 +15,7 @@ import SuperSelect from "../../../components/SuperSelect/SuperSelect";
 import FilterAltOffOutlinedIcon from '@mui/icons-material/FilterAltOffOutlined';
 import {PackSearch} from "../pack-search/PackSearch";
 import {MyAllPacksSwitch} from "../pack-My-All/MyAllPacksSwitch";
+import {DoubleSlider} from "../pack-slider/DoubleSlider";
 
 
 export const PacksTable = () => {
@@ -23,6 +24,8 @@ export const PacksTable = () => {
     const packNameSearch = useAppSelector(state => state.packs.packNameSearch)
     const newPack = useAppSelector(state => state.packs.newPack)
     const myPackId = useAppSelector(state => state.packs.user_id)
+    const minVal = useAppSelector(state => state.packs.min)
+    const maxVal = useAppSelector(state => state.packs.max)
 
     const dispatch = useAppDispatch()
     const packsOnPage = [10, 20, 30]
@@ -35,12 +38,13 @@ export const PacksTable = () => {
                     pageCount: 10,
                 }
             ))
-        },[dispatch,packs.maxCardsCount,packs.minCardsCount,packNameSearch,myPackId])
+        },[dispatch,minVal,maxVal,packNameSearch,myPackId])
 
     const createPackOnClickHandler = () => {
         dispatch(createPacksTC(newPack))
     }
-
+// console.log('minVal',minVal)
+//     console.log('maxVal',maxVal)
     return (<>
             <div style={{
                 maxWidth: '65%',
@@ -61,13 +65,14 @@ export const PacksTable = () => {
             }}>
                 <PackSearch/>
                 <MyAllPacksSwitch/>
-                <SuperDoubleRangeFronEnternet
-                    min={0}
-                    max={100}
-                    onChange={({min, max}: { min: number; max: number }) =>
-                        console.log(`min = ${min}, max = ${max}`)
-                    }
-                />
+<DoubleSlider/>
+                {/*<SuperDoubleRangeFronEnternet*/}
+                {/*    min={0}*/}
+                {/*    max={100}*/}
+                {/*    onChange={({min, max}: { min: number; max: number }) =>*/}
+                {/*        console.log(`min = ${min}, max = ${max}`)*/}
+                {/*    }*/}
+                {/*/>*/}
                 <FilterAltOffOutlinedIcon/>
             </div>
 
