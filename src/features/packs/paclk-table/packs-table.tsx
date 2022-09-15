@@ -9,23 +9,20 @@ import Paper from '@mui/material/Paper';
 import {useAppDispatch, useAppSelector} from "../../../components/hooks";
 import {useEffect, useState} from "react";
 import {createPacksTC, setPacksTC} from "../packs-reducer";
-import {SuperDoubleRangeFronEnternet} from "../../../components/SuperDoubleRange/SuperDoubleRangeFronEnternet";
-import { Pagination} from "@mui/material";
+import {Pagination} from "@mui/material";
 import SuperSelect from "../../../components/SuperSelect/SuperSelect";
-import FilterAltOffOutlinedIcon from '@mui/icons-material/FilterAltOffOutlined';
-import {PackSearch} from "../pack-search/PackSearch";
-import {MyAllPacksSwitch} from "../pack-My-All/MyAllPacksSwitch";
-import {DoubleSlider} from "../pack-slider/DoubleSlider";
-
+import FilterPanel from "../filterPanel/FilterPanel";
+import s from './packTable.module.css'
 
 export const PacksTable = () => {
     //const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const packs = useAppSelector(state => state.packs.packsData)
     const packNameSearch = useAppSelector(state => state.packs.packNameSearch)
     const newPack = useAppSelector(state => state.packs.newPack)
-    const myPackId = useAppSelector(state => state.packs.user_id)
+    const packId = useAppSelector(state => state.packs.user_id)
     const minVal = useAppSelector(state => state.packs.min)
     const maxVal = useAppSelector(state => state.packs.max)
+    const myPack = '6226057a0373a3000426a62d'
 
     const dispatch = useAppDispatch()
     const packsOnPage = [10, 20, 30]
@@ -33,49 +30,26 @@ export const PacksTable = () => {
 
 
     useEffect(() => {
-            dispatch(setPacksTC(
-                {
-                    pageCount: 10,
-                }
-            ))
-        },[dispatch,minVal,maxVal,packNameSearch,myPackId])
+
+        dispatch(setPacksTC(
+            {
+                pageCount: 10,
+                user_id: packId,
+            }
+        ))
+
+
+    }, [dispatch, minVal, maxVal, packNameSearch, packId, newPack])
 
     const createPackOnClickHandler = () => {
         dispatch(createPacksTC(newPack))
     }
-// console.log('minVal',minVal)
-//     console.log('maxVal',maxVal)
     return (<>
-            <div style={{
-                maxWidth: '65%',
-                justifyContent: 'space-between',
-                display: 'flex',
-                left: '18%',
-                position: 'relative'
-            }}>
+            <div className={s.newPackPanel}>
                 <h2>Packs list</h2>
-                <button onClick={createPackOnClickHandler}>Add new pack</button>
+                <button className={s.newPackButton} onClick={createPackOnClickHandler}>Add new pack</button>
             </div>
-            <div style={{
-                maxWidth: '65%',
-                justifyContent: 'space-between',
-                display: 'flex',
-                left: '18%',
-                position: 'relative'
-            }}>
-                <PackSearch/>
-                <MyAllPacksSwitch/>
-<DoubleSlider/>
-                {/*<SuperDoubleRangeFronEnternet*/}
-                {/*    min={0}*/}
-                {/*    max={100}*/}
-                {/*    onChange={({min, max}: { min: number; max: number }) =>*/}
-                {/*        console.log(`min = ${min}, max = ${max}`)*/}
-                {/*    }*/}
-                {/*/>*/}
-                <FilterAltOffOutlinedIcon/>
-            </div>
-
+            <FilterPanel/>
 
             <div style={{
                 maxWidth: '65%',
@@ -110,10 +84,15 @@ export const PacksTable = () => {
                                     <TableCell align="right">{pack.cardsCount}</TableCell>
                                     <TableCell align="right">{pack.created}</TableCell>
                                     <TableCell align="right">{pack.updated}</TableCell>
-                                    <TableCell align="right">
+                                    <TableCell align="left">
                                         <button>learn</button>
-                                        <button>edit</button>
-                                        <button>delete</button>
+                                        {pack.user_id === myPack &&
+                                            <>
+                                                <button>edit</button>
+                                                <button>delete</button>
+                                            </>
+                                        }
+
                                     </TableCell>
                                 </TableRow>
                             ))}

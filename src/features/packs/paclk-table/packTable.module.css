@@ -1,0 +1,24 @@
+h2{
+    margin:0;
+}
+.newPackPanel{
+    margin-top: 40px;
+    margin-bottom: 60px;
+    max-width: 65%;
+    justify-content: space-between;
+    display: flex;
+    left: 18%;
+    position: relative;
+}
+.newPackButton {
+    width: 175px;
+    height: 36px;
+    border-radius: 30px;
+    background-color: #366EFF;
+    margin-top: 12px;
+    border: none;
+    color:white;
+font-weight: 500;
+    font-size: 16px;
+    line-height: 19.5px;
+}

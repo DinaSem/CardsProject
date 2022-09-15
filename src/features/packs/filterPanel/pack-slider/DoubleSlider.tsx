@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Box, Slider} from "@mui/material";
-import {setMinMaxValueAC} from "../packs-reducer";
-import {useAppDispatch} from "../../../components/hooks";
+import {setMinMaxValueAC} from "../../packs-reducer";
+import {useAppDispatch, useAppSelector} from "../../../../components/hooks";
 import { useDebounce } from 'use-debounce';
 
     // function valuetext(value: number) {
@@ -10,11 +10,16 @@ import { useDebounce } from 'use-debounce';
 
     export const DoubleSlider = () => {
         const [value, setValue] = useState<number[]>([0, 100]);
+        const minVal = useAppSelector(state => state.packs.min)
+        const maxVal = useAppSelector(state => state.packs.max)
+
         const dispatch = useAppDispatch()
-        const [debounceValue] = useDebounce(value, 2000);
+        const [debounceValue] = useDebounce(value, 500);
 
         const handleChange = (event: Event, newValue: number | number[]) => {
             setValue(newValue as number[]);
+            // dispatch(setMinMaxValueAC(newValue[0],newValue[1]))
+
         };
         useEffect(() => {
             if (debounceValue) {
@@ -25,10 +30,8 @@ import { useDebounce } from 'use-debounce';
         return (
             <Box sx={{ width: 155 }}>
                 <Slider
-                    // getAriaLabel={() => 'Temperature range'}
-                    value={value}
+                    value={[minVal,maxVal]}
                     onChange={handleChange}
-                    //getAriaValueText={valuetext}
                     valueLabelDisplay="on"
                 />
             </Box>

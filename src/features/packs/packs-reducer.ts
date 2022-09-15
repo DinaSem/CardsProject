@@ -28,6 +28,7 @@ const initialState = {
 
 
 
+
 } as PacksStateType
 
 type PacksStateType = {
@@ -75,6 +76,19 @@ export const createNewPackAC = (newPack: CreatePackRequestType) =>
 
 
 // thunks
+
+export const getAllPacksTC = (): AppThunk => (dispatch) => {
+    // debugger
+    dispatch(setAppStatusAC('loading'))
+    packsAPI.setPacks({})
+        .then((res) => {
+            dispatch(setPacksAC(res.data))
+            dispatch(setAppStatusAC('succeeded'))
+        })
+        .catch((error) => {
+            handleServerNetworkError(error, dispatch)
+        })
+}
 
 export const setPacksTC = (packsData: PacksGetRequestDataType): AppThunk => (dispatch, getState) => {
     // debugger
