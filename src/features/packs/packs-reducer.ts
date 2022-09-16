@@ -2,6 +2,7 @@ import {Dispatch} from 'redux'
 import {setAppStatusAC} from '../app/app-reducer'
 import {handleServerNetworkError} from "../../utils/error-utils";
 import {
+    CardPacksType,
     CreatePackRequestType,
     packsAPI,
     PacksGetRequestDataType,
@@ -25,10 +26,7 @@ const initialState = {
             private: false,// если не отправить будет такой
         }
     },
-
-
-
-
+    packName:''
 } as PacksStateType
 
 type PacksStateType = {
@@ -39,6 +37,7 @@ type PacksStateType = {
     user_id:string
     min:number
     max:number
+    packName:string
 }
 
 export const packsReducer = (state: PacksStateType = initialState, action: PacksActionsType): PacksStateType => {
@@ -57,6 +56,7 @@ export const packsReducer = (state: PacksStateType = initialState, action: Packs
             return {...state, newPack: action.newPack}
         case "packs/SET-PACK-NAME-FOR-SEARCH":
             return {...state, packNameSearch: action.packNameSearch}
+
         default:
             return state
     }
@@ -73,6 +73,9 @@ export const setMyPacksAC = (user_id:string) =>
     ({type: "packs/SET-MY-PACKS", user_id} as const)
 export const createNewPackAC = (newPack: CreatePackRequestType) =>
     ({type: 'packs/CREATE-PACK', newPack} as const)
+export const deletePackAC = () =>
+    ({type: 'packs/DELETE-PACK'} as const)
+
 
 
 // thunks
@@ -123,70 +126,32 @@ export const createPacksTC = (newPack: CreatePackRequestType): AppThunk => (disp
             handleServerNetworkError(error, dispatch)
         })
 }
-// export const logOutTC = () => (dispatch: Dispatch) => {
-//     // debugger
-//     dispatch(setAppStatusAC('loading'))
-//     authAPI.logout()
-//         .then(() => {
-//         dispatch(setIsLoggedOutAC())
-//         dispatch(setAppStatusAC('succeeded'))
-//     })
-//         .catch((error) => {
-//             handleServerNetworkError(error, dispatch)
-//         })
-// }
-//
-// export const registerTC = (data: RegisterParamsType) => (dispatch: Dispatch) => {
-//     dispatch(setAppStatusAC('loading'))
-//     authAPI.register(data)
-//         .then(() => {
-//         dispatch(setIsRegisteredAC(true))
-//         dispatch(setAppStatusAC('succeeded'))
-//     })
-//         .catch((error) => {
-//             handleServerNetworkError(error, dispatch)
-//         })
-// }
-// export const initializeAppTC = () => (dispatch: Dispatch) => {
-//     dispatch(setAppStatusAC('loading'))
-//     authAPI.me()
-//         .then((res) => {
-//             if (res.data._id) {
-//                 dispatch(setIsLoggedInAC(res.data));
-//                 dispatch(setAppStatusAC('succeeded'))
-//             }
-//             console.log('me', res.data)
-//         })
-// }
-// export const updateUserTC = (name: string) => (dispatch: Dispatch) => {
-//     dispatch(setAppStatusAC('loading'))
-//     // debugger
-//     authAPI.updateUser(name)
-//         .then(() => {
-//             dispatch(updateUsertAC(name));
-//             dispatch(setAppStatusAC('succeeded'))
-//         })
-// }
-// export const forgotPasswordTC = (email:string) => (dispatch: Dispatch) => {
-//     dispatch(setAppStatusAC('loading'))
-//     // debugger
-//     authAPI.forgotPassword(email)
-//         .then(() => {
-//             debugger
-//             dispatch(setEmailAC(email))
-//             dispatch(emailHasBeenSent(true))
-//             dispatch(setAppStatusAC('succeeded'))
-//         })
-// }
-// export const setNewPasswordTC = (password:string,resetPasswordToken: string) => (dispatch: Dispatch) => {
-//     dispatch(setAppStatusAC('loading'))
-//     // debugger
-//     authAPI.newPassword(password,resetPasswordToken)
-//         .then(() => {
+export const deletePackTC = (id:string): AppThunk => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+    packsAPI.deletePack(id)
+        .then((res) => {
+            // @ts-ignore
+            dispatch(setPacksTC({}))
+            dispatch(setAppStatusAC('succeeded'))
 
-//             dispatch(setAppStatusAC('succeeded'))
-//         })
-// }
+        })
+        .catch((error) => {
+            handleServerNetworkError(error, dispatch)
+        })
+}
+export const updatePackTC = (cardsPack: CardPacksType): AppThunk => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+    packsAPI.updatePack(cardsPack)
+        .then((res) => {
+            // @ts-ignore
+            dispatch(setPacksTC({}))
+            dispatch(setAppStatusAC('succeeded'))
+        })
+        .catch((error) => {
+            handleServerNetworkError(error, dispatch)
+        })
+}
+
 
 
 // types
@@ -197,6 +162,7 @@ export type PacksActionsType =
     | ReturnType<typeof setIsLoggedInAC>
     | ReturnType<typeof setPackNameForSearchAC>
     | ReturnType<typeof setMyPacksAC>
+    | ReturnType<typeof deletePackAC>
     | AuthActionsType
 
 

@@ -2,10 +2,11 @@ import {applyMiddleware, combineReducers, createStore} from 'redux'
 import thunkMiddleware, {ThunkAction, ThunkDispatch} from 'redux-thunk'
 import {AppActionsType, appReducer} from '../features/app/app-reducer'
 import {AuthActionsType, authReducer} from "../features/auth/registration/auth-reducer";
-import {PacksActionsType, packsReducer} from "../features/packs/packs-reducer";
+import {PacksActionsType, packsReducer, setPacksAC} from "../features/packs/packs-reducer";
 import {LoginActionsType, loginReducer} from "../features/auth/Login/login-reducer";
 import {ProfileActionsType, profileReducer} from "../features/auth/profile/profile-reducer";
 import {passwordRecoveryReducer, PasswordRecoveryType} from "../features/auth/recovery/passwordRecovery-reducer";
+import {PacksGetRequestDataType} from "./cards-api";
 
 export type AppStoreType = ReturnType<typeof rootReducer>
 const rootReducer = combineReducers({
@@ -23,15 +24,16 @@ export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 export type AppRootStateType = ReturnType<typeof rootReducer>
 export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, AppActionType>
 
-export type AppActionType = PacksActionsType
+export type AppActionType =
     | AuthActionsType
     | AppActionsType
     | LoginActionsType
     | ProfileActionsType
     | PasswordRecoveryType
+    | PacksActionsType
 
-
-export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AppActionType>
+// export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AppActionType>
+export type AppThunk = ThunkAction<void, AppRootStateType, unknown, AppActionType>
 
 // а это, чтобы можно было в консоли браузера обращаться к store в любой момент
 // @ts-ignore

@@ -14,6 +14,17 @@ export const packsAPI = {
     createPack(params:CreatePackRequestType) {
         return instance.post<CreatePackRequestType,any>('/cards/pack', params)
     },
+    deletePack(id:string) {
+        return instance.delete(`/cards/pack`,{ params: { id }})
+    },
+    updatePack(cardsPack: {
+        _id: string,
+        name?:string,
+        cardCover?:string
+    }) {
+        return instance.put(`/cards/pack`,{cardsPack})
+    },
+
     // createTodolist(title: string) {
     //     return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TodolistType }>>>('todo-lists', {title});
     // },
@@ -54,11 +65,11 @@ export type PacksGetRequestDataType = {
 }
 export type CardPacksType = {
     _id: string
-    user_id: string
-    name: string
-    cardsCount: number
-    created: string
-    updated: string
+    user_id?: string
+    name?: string
+    cardsCount?: number
+    created?: string
+    updated?: string
 }
 
 export type PacksGetResponseDataType = {
@@ -89,4 +100,22 @@ export type ResponseType<D = {}> = {
     fieldsErrors: Array<string>
     data: D
 }
+// export type CardPackType = {
+//     _id: string
+//     user_id: string
+//     user_name: string
+//     private: boolean
+//     name: string
+//     path: string
+//     grade: number
+//     shots: number
+//     cardsCount: number
+//     type: string
+//     rating: number
+//     created: string
+//     updated: string
+//     more_id: string
+//     __v: number
+//     deckCover?: string | null
+// }
 

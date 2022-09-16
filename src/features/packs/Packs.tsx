@@ -1,14 +1,7 @@
 import * as React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import {useEffect, useState} from "react";
 import {Pagination} from "@mui/material";
-import s from './packTable.module.css'
+import s from './../packs/paclk-table/packTable.module.css'
 import FilterPanel from "./filterPanel/FilterPanel";
 import SuperSelect from "../../components/SuperSelect/SuperSelect";
 import {useAppDispatch, useAppSelector} from "../../components/hooks";
@@ -23,7 +16,6 @@ export const Packs = () => {
     const packId = useAppSelector(state => state.packs.user_id)
     const minVal = useAppSelector(state => state.packs.min)
     const maxVal = useAppSelector(state => state.packs.max)
-    const myPack = '6226057a0373a3000426a62d'
 
     const dispatch = useAppDispatch()
     const packsOnPage = [10, 20, 30]
@@ -31,15 +23,12 @@ export const Packs = () => {
 
 
     useEffect(() => {
-
         dispatch(setPacksTC(
             {
                 pageCount: 10,
                 user_id: packId,
             }
         ))
-
-
     }, [dispatch, minVal, maxVal, packNameSearch, packId, newPack])
 
     const createPackOnClickHandler = () => {
