@@ -13,6 +13,7 @@ import {AuthActionsType, setIsLoggedInAC} from "../auth/registration/auth-reduce
 
 
 const initialState = {
+    currentPage:1,
     packNameSearch:'',
     user_id:'',
     min:0,
@@ -30,6 +31,7 @@ const initialState = {
 } as PacksStateType
 
 type PacksStateType = {
+    currentPage:number
     packsData: PacksGetResponseDataType
     myPacksMode: boolean
     newPack: CreatePackRequestType
@@ -56,6 +58,9 @@ export const packsReducer = (state: PacksStateType = initialState, action: Packs
             return {...state, newPack: action.newPack}
         case "packs/SET-PACK-NAME-FOR-SEARCH":
             return {...state, packNameSearch: action.packNameSearch}
+        case 'packs/SET-CURRENT-PAGE':
+            // debugger
+            return {...state, currentPage: action.currentPage}
 
         default:
             return state
@@ -73,17 +78,17 @@ export const setMyPacksAC = (user_id:string) =>
     ({type: "packs/SET-MY-PACKS", user_id} as const)
 export const createNewPackAC = (newPack: CreatePackRequestType) =>
     ({type: 'packs/CREATE-PACK', newPack} as const)
-export const deletePackAC = () =>
-    ({type: 'packs/DELETE-PACK'} as const)
+export const setCurrentPageAC = (currentPage:number) =>
+    ({type: 'packs/SET-CURRENT-PAGE',currentPage} as const)
 
 
 
 // thunks
 
-export const getAllPacksTC = (): AppThunk => (dispatch) => {
+export const setPacksTC = (packsData: PacksGetRequestDataType): AppThunk => (dispatch) => {
     // debugger
     dispatch(setAppStatusAC('loading'))
-    packsAPI.setPacks({})
+    packsAPI.setPacks(packsData)
         .then((res) => {
             dispatch(setPacksAC(res.data))
             dispatch(setAppStatusAC('succeeded'))
@@ -93,27 +98,27 @@ export const getAllPacksTC = (): AppThunk => (dispatch) => {
         })
 }
 
-export const setPacksTC = (packsData: PacksGetRequestDataType): AppThunk => (dispatch, getState) => {
-    // debugger
-    dispatch(setAppStatusAC('loading'))
-    packsAPI.setPacks({
-        packName: getState().packs.packNameSearch,
-        min: getState().packs.min,
-        max: getState().packs.max,
-        sortPacks: packsData?.sortPacks,
-        page: getState().packs.packsData.page,
-        pageCount: packsData.pageCount,
-        user_id: getState().packs.user_id,
-    })
-
-        .then((res) => {
-            dispatch(setPacksAC(res.data))
-            dispatch(setAppStatusAC('succeeded'))
-        })
-        .catch((error) => {
-            handleServerNetworkError(error, dispatch)
-        })
-}
+// export const setPacksTC = (packsData: PacksGetRequestDataType): AppThunk => (dispatch, getState) => {
+//     // debugger
+//     dispatch(setAppStatusAC('loading'))
+//     packsAPI.setPacks({
+//         packName: getState().packs.packNameSearch,
+//         min: getState().packs.min,
+//         max: getState().packs.max,
+//         sortPacks: packsData?.sortPacks,
+//         page: packsData.page,
+//         pageCount: packsData.pageCount,
+//         user_id: getState().packs.user_id,
+//     })
+//
+//         .then((res) => {
+//             dispatch(setPacksAC(res.data))
+//             dispatch(setAppStatusAC('succeeded'))
+//         })
+//         .catch((error) => {
+//             handleServerNetworkError(error, dispatch)
+//         })
+// }
 export const createPacksTC = (newPack: CreatePackRequestType): AppThunk => (dispatch: Dispatch) => {
     // debugger
     dispatch(setAppStatusAC('loading'))
@@ -129,7 +134,7 @@ export const createPacksTC = (newPack: CreatePackRequestType): AppThunk => (disp
 export const deletePackTC = (id:string): AppThunk => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     packsAPI.deletePack(id)
-        .then((res) => {
+        .then(() => {
             // @ts-ignore
             dispatch(setPacksTC({}))
             dispatch(setAppStatusAC('succeeded'))
@@ -142,7 +147,7 @@ export const deletePackTC = (id:string): AppThunk => (dispatch: Dispatch) => {
 export const updatePackTC = (cardsPack: CardPacksType): AppThunk => (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     packsAPI.updatePack(cardsPack)
-        .then((res) => {
+        .then(() => {
             // @ts-ignore
             dispatch(setPacksTC({}))
             dispatch(setAppStatusAC('succeeded'))
@@ -162,7 +167,7 @@ export type PacksActionsType =
     | ReturnType<typeof setIsLoggedInAC>
     | ReturnType<typeof setPackNameForSearchAC>
     | ReturnType<typeof setMyPacksAC>
-    | ReturnType<typeof deletePackAC>
+    | ReturnType<typeof setCurrentPageAC>
     | AuthActionsType
 
 

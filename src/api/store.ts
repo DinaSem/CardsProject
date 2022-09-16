@@ -2,11 +2,10 @@ import {applyMiddleware, combineReducers, createStore} from 'redux'
 import thunkMiddleware, {ThunkAction, ThunkDispatch} from 'redux-thunk'
 import {AppActionsType, appReducer} from '../features/app/app-reducer'
 import {AuthActionsType, authReducer} from "../features/auth/registration/auth-reducer";
-import {PacksActionsType, packsReducer, setPacksAC} from "../features/packs/packs-reducer";
+import {PacksActionsType, packsReducer} from "../features/packs/packs-reducer";
 import {LoginActionsType, loginReducer} from "../features/auth/Login/login-reducer";
 import {ProfileActionsType, profileReducer} from "../features/auth/profile/profile-reducer";
 import {passwordRecoveryReducer, PasswordRecoveryType} from "../features/auth/recovery/passwordRecovery-reducer";
-import {PacksGetRequestDataType} from "./cards-api";
 
 export type AppStoreType = ReturnType<typeof rootReducer>
 const rootReducer = combineReducers({

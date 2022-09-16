@@ -9,7 +9,6 @@ import {NewPassword} from "../auth/newPassword/NewPassword";
 import {Recovery} from "../auth/recovery/Recovery";
 import {Registration} from "../auth/registration/Registration";
 import {Navbar} from "../navbar/Navbar";
-import {PacksTable} from "../packs/paclk-table/packs-table";
 import {useAppDispatch, useAppSelector} from "../../components/hooks";
 import {initializeAppTC, setAppInitializedAC} from "./app-reducer";
 import {Packs} from "../packs/Packs";
@@ -23,7 +22,7 @@ export const App = () => {
         dispatch(initializeAppTC())
 
         return () => {
-            dispatch(setAppInitializedAC(false))///???
+            dispatch(setAppInitializedAC(false))
         }
     }, [dispatch])
 

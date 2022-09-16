@@ -1,7 +1,6 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
-import TextField from "@mui/material/TextField";
-import {setMinMaxValueAC, setPackNameForSearchAC} from "../../packs-reducer";
+import {setPackNameForSearchAC} from "../../packs-reducer";
 import {Box} from "@mui/material";
 import { useDebounce } from 'use-debounce';
 import {useAppSelector} from "../../../../components/hooks";
@@ -20,20 +19,13 @@ export const PackSearch = () => {
         if (debounceValue) {
             dispatch(setPackNameForSearchAC(debounceValue))
         }
-    }, [debounceValue])
+    }, [debounceValue, dispatch])
 
     return (
         <Box component="form"
              sx={{'& > :not(style)': {width: 300, },}}
              noValidate
              autoComplete="off">
-            {/*<TextField*/}
-            {/*    id="outlined-name"*/}
-            {/*    label="Provide your text"*/}
-            {/*    value={packNameSearch}*/}
-            {/*    onChange={handleChange} */}
-
-            {/*/>*/}
             <input type="text" value={packNameSearch} placeholder={"Provide your text"} onChange={handleChange} style={{maxWidth: '413px',
                 padding: '8px'}}/>
         </Box>

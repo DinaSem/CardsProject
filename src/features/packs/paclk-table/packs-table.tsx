@@ -8,21 +8,24 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {useAppDispatch, useAppSelector} from "../../../components/hooks";
 import {deletePackTC, updatePackTC} from "../packs-reducer";
+import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 
 export const PacksTable = () => {
     const dispatch = useAppDispatch()
     const packs = useAppSelector(state => state.packs.packsData)
     const myUserId = '6226057a0373a3000426a62d'
 
-    const deletePackOnClickHandler = (id:string) => {
-            dispatch(deletePackTC(id))
+    const deletePackOnClickHandler = (id: string) => {
+        dispatch(deletePackTC(id))
     }
-    const editPackOnClickHandler = (_id:string) => {
-            dispatch(updatePackTC({
-                    _id,
-                    name: "new name for Dinas pack",
-                    }
-            ))
+    const editPackOnClickHandler = (_id: string) => {
+        dispatch(updatePackTC({
+                _id,
+                name: "new name for Dinas pack",
+            }
+        ))
     }
 
     return (<div style={{
@@ -55,14 +58,14 @@ export const PacksTable = () => {
                                     {pack.name}
                                 </TableCell>
                                 <TableCell align="right">{pack.cardsCount}</TableCell>
-                                <TableCell align="right">{pack.created}</TableCell>
                                 <TableCell align="right">{pack.updated}</TableCell>
+                                <TableCell align="right">{pack.user_id}</TableCell>
                                 <TableCell align="left">
-                                    <button>learn</button>
+                                    <SchoolOutlinedIcon/>
                                     {pack.user_id === myUserId &&
                                     <>
-                                        <button onClick={()=>editPackOnClickHandler(pack._id)}>edit</button>
-                                        <button onClick={()=>deletePackOnClickHandler(pack._id)}>delete</button>
+                                        <BorderColorOutlinedIcon onClick={() => editPackOnClickHandler(pack._id)}/>
+                                        <DeleteForeverOutlinedIcon onClick={() => deletePackOnClickHandler(pack._id)}/>
                                     </>
                                     }
 

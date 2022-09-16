@@ -1,7 +1,8 @@
-h2{
-    margin:0;
+h2 {
+    margin: 0;
 }
-.newPackPanel{
+
+.newPackPanel {
     margin-top: 40px;
     margin-bottom: 60px;
     max-width: 65%;
@@ -10,6 +11,7 @@ h2{
     left: 18%;
     position: relative;
 }
+
 .newPackButton {
     width: 175px;
     height: 36px;
@@ -17,8 +19,17 @@ h2{
     background-color: #366EFF;
     margin-top: 12px;
     border: none;
-    color:white;
-font-weight: 500;
+    color: white;
+    font-weight: 500;
     font-size: 16px;
-    line-height: 19.5px;
+    line-height: 19px;
+    cursor: pointer;
+}
+.paginationWrapper{
+    max-width: 65%;
+    justify-content: start;
+    display: flex;
+    left: 18%;
+    position: relative;
+    margin: 40px 0;
 }
