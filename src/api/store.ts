@@ -6,6 +6,7 @@ import {PacksActionsType, packsReducer} from "../features/packs/packs-reducer";
 import {LoginActionsType, loginReducer} from "../features/auth/Login/login-reducer";
 import {ProfileActionsType, profileReducer} from "../features/auth/profile/profile-reducer";
 import {passwordRecoveryReducer, PasswordRecoveryType} from "../features/auth/recovery/passwordRecovery-reducer";
+import {CardsActionsType, cardsReducer} from "../features/cards/cards-reducer";
 
 export type AppStoreType = ReturnType<typeof rootReducer>
 const rootReducer = combineReducers({
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     packs: packsReducer,
     login:loginReducer,
     profile:profileReducer,
-    recovery:passwordRecoveryReducer
+    recovery:passwordRecoveryReducer,
+    cards:cardsReducer
 
 })
 // непосредственно создаём store
@@ -30,6 +32,7 @@ export type AppActionType =
     | ProfileActionsType
     | PasswordRecoveryType
     | PacksActionsType
+    | CardsActionsType
 
 // export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AppActionType>
 export type AppThunk = ThunkAction<void, AppRootStateType, unknown, AppActionType>

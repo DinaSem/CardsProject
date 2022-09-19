@@ -9,7 +9,7 @@ import {PacksTable} from "./paclk-table/packs-table";
 import FormControl from "@mui/material/FormControl";
 
 export const Packs = () => {
-    //const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+
     const packNameSearch = useAppSelector(state => state.packs.packNameSearch)
     const newPack = useAppSelector(state => state.packs.newPack)
     const packId = useAppSelector(state => state.packs.user_id)
@@ -20,7 +20,25 @@ export const Packs = () => {
 
     const dispatch = useAppDispatch()
     const [pagesOnPage, setPageCount] = useState('');
-    const pagesCount = Math.ceil(cardPacksTotalCount/+pagesOnPage)
+    const pagesCount = Math.ceil(cardPacksTotalCount / +pagesOnPage)
+
+    useEffect(() => {
+        dispatch(setPacksTC(
+            {
+                pageCount: +pagesOnPage,
+                user_id: packId,
+                page: currentPage,
+                min,
+                max,
+                packName: packNameSearch,
+                sortPacks: 1,
+            }
+        ))
+    }, [dispatch, min, max, packNameSearch, packId, newPack, pagesOnPage, currentPage])
+
+    const createPackOnClickHandler = () => {
+        dispatch(createPacksTC(newPack))
+    }
 
     const handleChange = (event: SelectChangeEvent) => {
         setPageCount(event.target.value as string);
@@ -31,26 +49,9 @@ export const Packs = () => {
         dispatch(setCurrentPageAC(value))
     };
 
-    useEffect(() => {
-        // debugger
-        dispatch(setPacksTC(
-            {
-                pageCount: +pagesOnPage,
-                user_id: packId,
-                page:currentPage,
-                min,
-                max,
-                packName:packNameSearch,
-                sortPacks:1,
 
-            }
-        ))
-    }, [dispatch, min, max, packNameSearch, packId, newPack,pagesOnPage,currentPage])
-
-    const createPackOnClickHandler = () => {
-        dispatch(createPacksTC(newPack))
-    }
-    return (<>
+    return (
+        <div>
             <div className={s.newPackPanel}>
                 <h2>Packs list</h2>
                 <button className={s.newPackButton} onClick={createPackOnClickHandler}>Add new pack</button>
@@ -60,8 +61,8 @@ export const Packs = () => {
             <div className={s.paginationWrapper}>
                 <Pagination count={pagesCount} shape="rounded" page={currentPage} onChange={handlePaginationChange}/>
                 <span>Show</span>
-                <Box sx={{ minWidth: 120 }} style={{minWidth: '80px'}}>
-                    <FormControl sx={{ m: 1, minWidth: 60 }} style={{margin: '-8px 10px'}}  size="small">
+                <Box sx={{minWidth: 120}} style={{minWidth: '80px'}}>
+                    <FormControl sx={{m: 1, minWidth: 60}} style={{margin: '-8px 10px'}} size="small">
                         <Select value={pagesOnPage} onChange={handleChange}>
                             <MenuItem value={10}>10</MenuItem>
                             <MenuItem value={20}>20</MenuItem>
@@ -71,6 +72,6 @@ export const Packs = () => {
                 </Box>
                 <span>Packs per Page</span>
             </div>
-        </>
+        </div>
     );
 };

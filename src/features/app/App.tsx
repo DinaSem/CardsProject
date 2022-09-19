@@ -12,6 +12,7 @@ import {Navbar} from "../navbar/Navbar";
 import {useAppDispatch, useAppSelector} from "../../components/hooks";
 import {initializeAppTC, setAppInitializedAC} from "./app-reducer";
 import {Packs} from "../packs/Packs";
+import {Cards} from "../cards/Cards";
 
 export const App = () => {
     const dispatch = useAppDispatch()
@@ -47,6 +48,7 @@ export const App = () => {
             <Route path='registration' element={<Registration/>}/>
             <Route path='set-new-password/:token' element={<NewPassword/>}/>
             <Route path='packs' element={<Packs/>}/>
+            <Route path={'/cards_list/:packId'} element={<Cards/>} />
             <Route path='404' element={<Error404/>}/>
             <Route path='*' element={<Navigate to='/404'/>}/>
         </Routes>

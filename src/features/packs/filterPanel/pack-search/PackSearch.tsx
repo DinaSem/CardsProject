@@ -19,7 +19,7 @@ export const PackSearch = () => {
         if (debounceValue) {
             dispatch(setPackNameForSearchAC(debounceValue))
         }
-    }, [debounceValue, dispatch])
+    }, [dispatch, debounceValue])
 
     return (
         <Box component="form"

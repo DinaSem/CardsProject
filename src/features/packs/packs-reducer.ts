@@ -7,7 +7,7 @@ import {
     packsAPI,
     PacksGetRequestDataType,
     PacksGetResponseDataType
-} from "../../api/cards-api";
+} from "../../api/packs-api";
 import {AppThunk} from "../../api/store";
 import {AuthActionsType, setIsLoggedInAC} from "../auth/registration/auth-reducer";
 

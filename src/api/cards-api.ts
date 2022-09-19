@@ -7,99 +7,124 @@ export const instance = axios.create({
 })
 
 // api
-export const packsAPI = {
-    setPacks(params: PacksGetRequestDataType) {
-        return instance.get<PacksGetRequestDataType,AxiosResponse<PacksGetResponseDataType>>('cards/pack', {params});
+export const cardsAPI = {
+    setCards(values: CardsGetRequestDataType) {
+        return instance.get<GetCardsResponseType>('cards/card', { params: values });
     },
-    createPack(params:CreatePackRequestType) {
-        return instance.post<CreatePackRequestType,any>('/cards/pack', params)
-    },
-    deletePack(id:string) {
-        return instance.delete(`/cards/pack`,{ params: { id }})
-    },
-    updatePack(cardsPack: {
-        _id: string,
-        name?:string,
-        cardCover?:string
-    }) {
-        return instance.put(`/cards/pack`,{cardsPack})
-    },
-
-    // createTodolist(title: string) {
-    //     return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TodolistType }>>>('todo-lists', {title});
+    // createPack(params:CreatePackRequestType) {
+    //     return instance.post<CreatePackRequestType,any>('/cards/pack', params)
     // },
-    // deleteTodolist(id: string) {
-    //     return instance.delete<ResponseType>(`todo-lists/${id}`);
+    // deletePack(id:string) {
+    //     return instance.delete(`/cards/pack`,{ params: { id }})
     // },
-    // updateTodolist(id: string, title: string) {
-    //     return instance.put<{ title: string }, AxiosResponse<ResponseType>>(`todo-lists/${id}`, {title});
+    // updatePack(cardsPack: {
+    //     _id: string,
+    //     name?:string,
+    //     cardCover?:string
+    // }) {
+    //     return instance.put(`/cards/pack`,{cardsPack})
     // },
-    // getTasks(todolistId: string) {
-    //     return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`);
-    // },
-    // deleteTask(todolistId: string, taskId: string) {
-    //     return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`);
-    // },
-    // createTask(todolistId: string, title: string) {
-    //     return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TaskType }>>>(`todo-lists/${todolistId}/tasks`, {title});
-    // },
-    // updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
-    //     return instance.put<UpdateTaskModelType, AxiosResponse<ResponseType<{ item: TaskType }>>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
-    // }
 
 }
+
+export type CardType = {
+    _id: string
+    cardsPack_id: string
+    user_id: string
+    answer: string
+    question: string
+    grade: number
+    shots: number
+    comments: string
+    type: string
+    rating: number
+    more_id: string
+    created: string
+    updated: string
+    __v: number
+}
+
+export type CardsStateType = CardType[]
 
 // types
-export type PacksGetRequestType = {
-    params: PacksGetRequestDataType
+export type CardsGetRequestDataType={
+    cardAnswer?:string;
+    cardQuestion?:string;
+    cardsPack_id:string;
+    min?:number;
+    max?:number;
+    sortCards?:number;
+    page?:number;
+    pageCount?:number;
+}
+export type GetCardsResponseType = {
+    cards: CardType[]
+    packUserId: string
+    packName: string
+    packPrivate: boolean
+    packDeckCover: string
+    packCreated: string
+    packUpdated: string
+    page: number
+    pageCount: number
+    cardsTotalCount: number
+    minGrade: number
+    maxGrade: number
+    token: string
+    tokenDeathTime: number
 }
 
-export type PacksGetRequestDataType = {
-    packName?: string // не обязательно
-    min?: number // не обязательно
-    max?: number // не обязательно
-    sortPacks?: number // не обязательно
-    page?: number // не обязательно
-    pageCount?: number // не обязательно
-    user_id?: string// чьи колоды не обязательно, или прийдут все
-}
-export type CardPacksType = {
-    _id: string
-    user_id?: string
-    name?: string
-    cardsCount?: number
-    created?: string
-    updated?: string
-}
 
-export type PacksGetResponseDataType = {
-    cardPacks: Array<CardPacksType>
-    cardPacksTotalCount: number// количество колод
-    maxCardsCount: number
-    minCardsCount: number
-    page: number // выбранная страница
-    pageCount: number// количество элементов на странице
-}
-// export type CreatePackRequestType= {
+// export type PacksGetRequestType = {
+//     params: PacksGetRequestDataType
+// }
+//
+// export type PacksGetRequestDataType = {
+//     packName?: string // не обязательно
+//     min?: number // не обязательно
+//     max?: number // не обязательно
+//     sortPacks?: number // не обязательно
+//     page?: number // не обязательно
+//     pageCount?: number // не обязательно
+//     user_id?: string// чьи колоды не обязательно, или прийдут все
+// }
+// export type CardPacksType = {
+//     _id: string
+//     user_id?: string
+//     name?: string
+//     cardsCount?: number
+//     created?: string
+//     updated?: string
+// }
+//
+// export type PacksGetResponseDataType = {
+//     cardPacks: Array<CardPacksType>
+//     cardPacksTotalCount: number// количество колод
+//     maxCardsCount: number
+//     minCardsCount: number
+//     page: number // выбранная страница
+//     pageCount: number// количество элементов на странице
+// }
+// // export type CreatePackRequestType= {
+// //     cardsPack: {
+// //         name: string, // если не отправить будет таким
+// //         deckCover?: string, // не обязателен
+// //         private?: boolean// если не отправить будет такой
+// //     }
+//
+//     export type CreatePackRequestType= {
 //     cardsPack: {
 //         name: string, // если не отправить будет таким
 //         deckCover?: string, // не обязателен
 //         private?: boolean// если не отправить будет такой
 //     }
-
-    export type CreatePackRequestType= {
-    cardsPack: {
-        name: string, // если не отправить будет таким
-        deckCover?: string, // не обязателен
-        private?: boolean// если не отправить будет такой
-    }
-}
-export type ResponseType<D = {}> = {
-    resultCode: number
-    messages: Array<string>
-    fieldsErrors: Array<string>
-    data: D
-}
+// }
+// export type ResponseType<D = {}> = {
+//     resultCode: number
+//     messages: Array<string>
+//     fieldsErrors: Array<string>
+//     data: D
+// }
 // export type CardPackType = {
 //     _id: string
 //     user_id: string

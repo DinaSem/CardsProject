@@ -11,11 +11,14 @@ import {deletePackTC, updatePackTC} from "../packs-reducer";
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
+import {useNavigate} from "react-router-dom";
+
 
 export const PacksTable = () => {
     const dispatch = useAppDispatch()
     const packs = useAppSelector(state => state.packs.packsData)
     const myUserId = '6226057a0373a3000426a62d'
+    const navigate = useNavigate()
 
     const deletePackOnClickHandler = (id: string) => {
         dispatch(deletePackTC(id))
@@ -27,6 +30,7 @@ export const PacksTable = () => {
             }
         ))
     }
+
 
     return (<div style={{
             maxWidth: '65%',
@@ -49,14 +53,18 @@ export const PacksTable = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {packs?.cardPacks?.map((pack) => (
-                            <TableRow
+                        {packs?.cardPacks?.map((pack) =>{
+                            const onClickNamePack = () => {
+                                navigate(`/cards_list/${pack._id}`)
+                            }
+                            return <TableRow
                                 key={pack._id}
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
                             >
-                                <TableCell component="th" scope="row">
+                                <TableCell component="th" scope="row" onClick={onClickNamePack}>
                                     {pack.name}
                                 </TableCell>
+
                                 <TableCell align="right">{pack.cardsCount}</TableCell>
                                 <TableCell align="right">{pack.updated}</TableCell>
                                 <TableCell align="right">{pack.user_id}</TableCell>
@@ -71,7 +79,7 @@ export const PacksTable = () => {
 
                                 </TableCell>
                             </TableRow>
-                        ))}
+                        })}
                     </TableBody>
                 </Table>
             </TableContainer>
