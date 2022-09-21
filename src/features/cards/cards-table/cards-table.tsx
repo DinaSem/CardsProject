@@ -10,6 +10,10 @@ import {useAppDispatch, useAppSelector} from "../../../components/hooks";
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
+import {Stars} from "./Stars";
+
+
+
 
 export const CardsTable = () => {
     const dispatch = useAppDispatch()
@@ -48,7 +52,7 @@ export const CardsTable = () => {
                     </TableHead>
                     <TableBody>
                         {cards?.map((card) => {
-                            console.log(card.question)
+                            console.log(card.grade)
                            return <TableRow
                                 key={card._id}
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
@@ -56,7 +60,8 @@ export const CardsTable = () => {
                                 <TableCell component="th" scope="row">{card.question}</TableCell>
                                 <TableCell align="left">{card.answer}</TableCell>
                                 <TableCell align="left">{card.updated}</TableCell>
-                                <TableCell align="left">{card.grade}</TableCell>
+                                <TableCell align="left"><Stars grades={card.grade}/></TableCell>
+                                {/*<TableCell align="left">{card.grade}</TableCell>*/}
                                 {/*<TableCell align="left">*/}
                                 {/*    <SchoolOutlinedIcon/>*/}
                                 {/*    {pack.user_id === myUserId &&*/}

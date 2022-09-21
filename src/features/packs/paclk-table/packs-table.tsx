@@ -54,6 +54,7 @@ export const PacksTable = () => {
                     </TableHead>
                     <TableBody>
                         {packs?.cardPacks?.map((pack) =>{
+
                             const onClickNamePack = () => {
                                 navigate(`/cards_list/${pack._id}`)
                             }

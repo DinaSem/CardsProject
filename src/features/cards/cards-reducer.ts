@@ -1,22 +1,23 @@
 import {Dispatch} from 'redux'
 import {setAppStatusAC} from '../app/app-reducer'
 import {handleServerNetworkError} from "../../utils/error-utils";
-import {cardsAPI, CardsStateType,} from "../../api/cards-api";
+import {cardsAPI, CardsGetRequestDataType, CardsStateType,} from "../../api/cards-api";
 import {AppThunk} from "../../api/store";
 import {AuthActionsType, setIsLoggedInAC} from "../auth/registration/auth-reducer";
 
 
 const initialState = {
-        cards: [] as CardsStateType,
-        cardsPack_id: '',
-        cardAnswer: '',
-        cardQuestion: '',
-        min: 0,
-        max: 5,
-        sortCards: '0updated',
-        page: 1,
-        pageCount: 5,
-        cardsTotalCount: 0,
+    cards: [] as CardsStateType,
+    cardsPack_id: '',
+    cardAnswer: '',
+    cardQuestion: '',
+    min: 0,
+    max: 5,
+    sortCards: '0updated',
+    page: 1,
+    pageCount: 5,
+    cardsTotalCount: 0,
+    currentPage: 1
     // myPacksMode: false,
     // newPack: {
     //     cardsPack: {
@@ -26,7 +27,7 @@ const initialState = {
     //     }
     // },
     // packName:''
-    // currentPage:1,
+    // ,
     // packNameSearch:'',
     // user_id:'',
     // min:0,
@@ -38,21 +39,10 @@ export const cardsReducer = (state: InitialStateType = initialState, action: Car
     switch (action.type) {
         case "cards/SET-CARDS":
             return {...state, cards: action.cards}
-        // case "packs/SET-MY-PACKS":
-        //     return {...state, user_id: action.user_id}
-        // case "packs/SET-MIN-MAX-VALUE":
-        //     return {
-        //         ...state,
-        //             min: action.min,
-        //             max: action.max
-        //     }
-        // case "packs/CREATE-PACK":
-        //     return {...state, newPack: action.newPack}
-        // case "packs/SET-PACK-NAME-FOR-SEARCH":
-        //     return {...state, packNameSearch: action.packNameSearch}
-        // case 'packs/SET-CURRENT-PAGE':
-        //     // debugger
-        //     return {...state, currentPage: action.currentPage}
+        case "cards/SET-CARDS-TOTAL-COUNT":
+            return {...state, cardsTotalCount: action.cardsTotalCount}
+        case "cards/SET-PAGE":
+            return {...state, page: action.page}
 
         default:
             return state
@@ -62,27 +52,24 @@ export const cardsReducer = (state: InitialStateType = initialState, action: Car
 
 export const setCardsAC = (cards: CardsStateType) =>
     ({type: 'cards/SET-CARDS', cards} as const)
-// export const setMinMaxValueAC = (min: number, max: number) =>
-//     ({type: "packs/SET-MIN-MAX-VALUE", min, max} as const)
-// export const setPackNameForSearchAC = (packNameSearch:string) =>
-//     ({type: "packs/SET-PACK-NAME-FOR-SEARCH", packNameSearch} as const)
-// export const setMyPacksAC = (user_id:string) =>
-//     ({type: "packs/SET-MY-PACKS", user_id} as const)
-// export const createNewPackAC = (newPack: CreatePackRequestType) =>
-//     ({type: 'packs/CREATE-PACK', newPack} as const)
-// export const setCurrentPageAC = (currentPage:number) =>
-//     ({type: 'packs/SET-CURRENT-PAGE',currentPage} as const)
+export const setCardsTotalCountAC = (cardsTotalCount: number) =>
+    ({type: 'cards/SET-CARDS-TOTAL-COUNT', cardsTotalCount} as const)
+export const setCardPageAC = (page:number) =>
+    ({type: 'cards/SET-PAGE',page} as const)
 
 
 
 // thunks
 
-export const setCardsTC = (cardsPack_id: string): AppThunk => (dispatch) => {
+// export const setCardsTC = (cardsPack_id: string): AppThunk => (dispatch) => {
+export const setCardsTC = (cardsData:CardsGetRequestDataType): AppThunk => (dispatch) => {
     // debugger
     dispatch(setAppStatusAC('loading'))
-    cardsAPI.setCards({cardsPack_id})
+    // cardsAPI.setCards({cardsPack_id})
+    cardsAPI.setCards(cardsData)
         .then((res) => {
             dispatch(setCardsAC(res.data.cards))
+            dispatch(setCardsTotalCountAC(res.data.cardsTotalCount))
             dispatch(setAppStatusAC('succeeded'))
         })
         .catch((error) => {
@@ -150,10 +137,11 @@ export const setCardsTC = (cardsPack_id: string): AppThunk => (dispatch) => {
 // }
 
 
-
 // types
 export type CardsActionsType =
     | ReturnType<typeof setCardsAC>
+    | ReturnType<typeof setCardsTotalCountAC>
+    | ReturnType<typeof setCardPageAC>
     // | ReturnType<typeof setMinMaxValueAC>
     // | ReturnType<typeof createNewPackAC>
     // | ReturnType<typeof setIsLoggedInAC>

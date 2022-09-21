@@ -5,59 +5,101 @@ import s from './../packs/paclk-table/packTable.module.css'
 import {useAppDispatch, useAppSelector} from "../../components/hooks";
 // import FormControl from "@mui/material/FormControl";
 import {CardsTable} from "./cards-table/cards-table";
-import {setCardsTC} from "./cards-reducer";
-import {useParams} from "react-router-dom";
-// import {CardResponseType} from "../../api/cards-api";
+import {setCardPageAC, setCardsTC} from "./cards-reducer";
+import {useNavigate, useParams} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "../../api/store";
+import {Box, MenuItem, Pagination, Select, SelectChangeEvent} from "@mui/material";
+import {setCurrentPageAC} from "../packs/packs-reducer";
+import FormControl from "@mui/material/FormControl";
+
 
 export const Cards = () => {
 
-    const params = useParams()
-    const dispatch = useAppDispatch()
-    const packId = params.packId ? params.packId : ''
-    const myUserId = '6226057a0373a3000426a62d'
+        const dispatch = useAppDispatch()
+        const navigate = useNavigate()
+        const params = useParams()
+        const packId = params.packId ? params.packId : ''
+        const myUserId = '6226057a0373a3000426a62d';
+        const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn)
+        const page = useAppSelector((state) => state.cards.page)
+        const cardsTotalCount = useAppSelector((state) => state.cards.cardsTotalCount)
+        const packIsEmpty = (cardsTotalCount === 0)
 
 
-    useEffect(() => {
-        dispatch(setCardsTC(packId))
-    }, [dispatch])
+        const [cardsOnPage, setCardsOnPage] = useState('4');
+        const pagesCount = Math.ceil(cardsTotalCount / +cardsOnPage)
 
 
-    // const createPackOnClickHandler = () => {
-    //     dispatch(createPacksTC(newPack))
-    // }
-    //
-    // const handleChange = (event: SelectChangeEvent) => {
-    //     setPageCount(event.target.value as string);
-    // };
-    // // const [page, setPage] = useState<number>(1);
-    // const handlePaginationChange = (event: ChangeEvent<any>, value: number) => {
-    //     // setPage(value);
-    //     dispatch(setCurrentPageAC(value))
-    // };
+        useEffect(() => {
+                dispatch(setCardsTC({
+                        cardsPack_id: packId,
+                        page,
+                    }
+                ))
+            }, [dispatch, cardsTotalCount, packId, page]
+        )
 
+        const createCardOnClickHandler = () => {
 
-    return (
-        <div>
-            <div className={s.newPackPanel}>
-                {packId === myUserId ? <h2>Cards list</h2> : <h2>Friend’s Pack</h2>}
-                {/*<button className={s.newPackButton} onClick={createPackOnClickHandler}>Add new pack</button>*/}
+        }
+
+        const handleChange = (event: SelectChangeEvent) => {
+            setCardsOnPage(event.target.value as string);
+        };
+
+        const handlePaginationChange = (event: ChangeEvent<any>, value: number) => {
+            dispatch(setCardPageAC(value))
+        };
+
+        if (!isLoggedIn) {
+            navigate('/login')
+        }
+// const createPackOnClickHandler = () => {
+//     dispatch(createPacksTC(newPack))
+// }
+//
+// const handleChange = (event: SelectChangeEvent) => {
+//     setPageCount(event.target.value as string);
+// };
+// // const [page, setPage] = useState<number>(1);
+// const handlePaginationChange = (event: ChangeEvent<any>, value: number) => {
+//     // setPage(value);
+//     dispatch(setCurrentPageAC(value))
+// };
+        return (
+            <div>
+                <div className={s.newPackPanel}>
+                    {packId === myUserId ? <h2>Cards list</h2> : <h2>Friend’s Pack</h2>}
+                    {/*<button className={s.newPackButton} onClick={createPackOnClickHandler}>Add new pack</button>*/}
+                </div>
+                {packIsEmpty &&
+                <div style={{textAlign: 'center'}}>
+                    <div>This pack is empty. Click "Add new card" to fill this pack</div>
+                    <button className={s.newPackButton} onClick={createCardOnClickHandler}>Add new card</button>
+                </div>
+                }
+                {/*<FilterPanel/>*/}
+                {!packIsEmpty &&
+                <>
+                    <CardsTable/>
+                    <div className={s.paginationWrapper}>
+                        <Pagination count={pagesCount} shape="rounded" page={page} onChange={handlePaginationChange}/>
+                        <span>Show</span>
+                        <Box sx={{minWidth: 120}} style={{minWidth: '80px'}}>
+                            <FormControl sx={{m: 1, minWidth: 60}} style={{margin: '-8px 10px'}} size="small">
+                                <Select value={cardsOnPage} onChange={handleChange}>
+                                    <MenuItem value={10}>10</MenuItem>
+                                    <MenuItem value={20}>20</MenuItem>
+                                    <MenuItem value={30}>30</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Box>
+                        <span>cards per Page</span>
+                    </div>
+                </>
+                }
             </div>
-            {/*<FilterPanel/>*/}
-            <CardsTable/>
-            {/*<div className={s.paginationWrapper}>*/}
-            {/*    <Pagination count={pagesCount} shape="rounded" page={currentPage} onChange={handlePaginationChange}/>*/}
-            {/*    <span>Show</span>*/}
-            {/*    <Box sx={{minWidth: 120}} style={{minWidth: '80px'}}>*/}
-            {/*        <FormControl sx={{m: 1, minWidth: 60}} style={{margin: '-8px 10px'}} size="small">*/}
-            {/*            <Select value={pagesOnPage} onChange={handleChange}>*/}
-            {/*                <MenuItem value={10}>10</MenuItem>*/}
-            {/*                <MenuItem value={20}>20</MenuItem>*/}
-            {/*                <MenuItem value={30}>30</MenuItem>*/}
-            {/*            </Select>*/}
-            {/*        </FormControl>*/}
-            {/*    </Box>*/}
-            {/*    <span>Packs per Page</span>*/}
-            {/*</div>*/}
-        </div>
-    );
-};
+        );
+    }
+;
