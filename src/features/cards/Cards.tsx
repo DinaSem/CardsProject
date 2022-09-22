@@ -7,10 +7,7 @@ import {useAppDispatch, useAppSelector} from "../../components/hooks";
 import {CardsTable} from "./cards-table/cards-table";
 import {setCardPageAC, setCardsTC} from "./cards-reducer";
 import {useNavigate, useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {AppRootStateType} from "../../api/store";
 import {Box, MenuItem, Pagination, Select, SelectChangeEvent} from "@mui/material";
-import {setCurrentPageAC} from "../packs/packs-reducer";
 import FormControl from "@mui/material/FormControl";
 
 
@@ -24,6 +21,7 @@ export const Cards = () => {
         const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn)
         const page = useAppSelector((state) => state.cards.page)
         const cardsTotalCount = useAppSelector((state) => state.cards.cardsTotalCount)
+        const currentPackName = useAppSelector((state) => state.packs.packsData.cardPacks?.find((n) => n._id === packId))
         const packIsEmpty = (cardsTotalCount === 0)
 
 
@@ -55,6 +53,9 @@ export const Cards = () => {
         if (!isLoggedIn) {
             navigate('/login')
         }
+
+        console.log(currentPackName)
+
 // const createPackOnClickHandler = () => {
 //     dispatch(createPacksTC(newPack))
 // }
@@ -70,8 +71,7 @@ export const Cards = () => {
         return (
             <div>
                 <div className={s.newPackPanel}>
-                    {packId === myUserId ? <h2>Cards list</h2> : <h2>Friend’s Pack</h2>}
-                    {/*<button className={s.newPackButton} onClick={createPackOnClickHandler}>Add new pack</button>*/}
+                        <h2>{currentPackName?.name}</h2>
                 </div>
                 {packIsEmpty &&
                 <div style={{textAlign: 'center'}}>
