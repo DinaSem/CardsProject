@@ -9,20 +9,20 @@ export const instance = axios.create({
 // api
 export const cardsAPI = {
     setCards(values: CardsGetRequestDataType) {
-        return instance.get<GetCardsResponseType>('cards/card', { params: values });
+        return instance.get<GetCardsResponseType>('cards/card', {params: values});
     },
-    // createPack(params:CreatePackRequestType) {
-    //     return instance.post<CreatePackRequestType,any>('/cards/pack', params)
-    // },
-    // deletePack(id:string) {
-    //     return instance.delete(`/cards/pack`,{ params: { id }})
-    // },
+    createCard(params: CreateCardRequestType) {
+        return instance.post<CreateCardRequestType,any>('/cards/card',params)
+    },
+    deleteCard(id:string) {
+        return instance.delete(`/cards/card`,{ params: { id }})
+    },
     // updatePack(cardsPack: {
     //     _id: string,
     //     name?:string,
     //     cardCover?:string
     // }) {
-    //     return instance.put(`/cards/pack`,{cardsPack})
+    //     return instance.put(`/cards/card`,{cardsPack})
     // },
 
 }
@@ -47,15 +47,15 @@ export type CardType = {
 export type CardsStateType = CardType[]
 
 // types
-export type CardsGetRequestDataType={
-    cardAnswer?:string;
-    cardQuestion?:string;
-    cardsPack_id:string;
-    min?:number;
-    max?:number;
-    sortCards?:number;
-    page?:number;
-    pageCount?:number;
+export type CardsGetRequestDataType = {
+    cardAnswer?: string;
+    cardQuestion?: string;
+    cardsPack_id: string;
+    min?: number;
+    max?: number;
+    sortCards?: string;
+    page?: number;
+    pageCount?: number;
 }
 export type GetCardsResponseType = {
     cards: CardType[]
@@ -73,7 +73,19 @@ export type GetCardsResponseType = {
     token: string
     tokenDeathTime: number
 }
-
+export type CreateCardRequestType = {
+    card: {
+        cardsPack_id: string
+        question: string
+        answer: string
+        grade?: number
+        shots?: number
+        answerImg?: string
+        questionImg?: string
+        questionVideo?: string
+        answerVideo?: string
+    }
+}
 
 // export type PacksGetRequestType = {
 //     params: PacksGetRequestDataType

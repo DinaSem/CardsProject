@@ -1,11 +1,9 @@
 import * as React from 'react';
 import {ChangeEvent, useEffect, useState} from "react";
-// import {Box, MenuItem, Pagination, Select, SelectChangeEvent} from "@mui/material";
 import s from './../packs/paclk-table/packTable.module.css'
 import {useAppDispatch, useAppSelector} from "../../components/hooks";
-// import FormControl from "@mui/material/FormControl";
 import {CardsTable} from "./cards-table/cards-table";
-import {setCardPageAC, setCardsTC} from "./cards-reducer";
+import {createCardsTC, setCardPageAC, setCardsTC} from "./cards-reducer";
 import {useNavigate, useParams} from "react-router-dom";
 import {Box, MenuItem, Pagination, Select, SelectChangeEvent} from "@mui/material";
 import FormControl from "@mui/material/FormControl";
@@ -22,6 +20,9 @@ export const Cards = () => {
         const page = useAppSelector((state) => state.cards.page)
         const cardsTotalCount = useAppSelector((state) => state.cards.cardsTotalCount)
         const currentPackName = useAppSelector((state) => state.packs.packsData.cardPacks?.find((n) => n._id === packId))
+        const myCards = useAppSelector((state) => state.packs.packsData.cardPacks?.filter((n) => n.user_id === myUserId))
+        const currentPack = useAppSelector((state) => state.packs.packsData.cardPacks?.find((n) => n._id === packId))
+
         const packIsEmpty = (cardsTotalCount === 0)
 
 
@@ -30,17 +31,19 @@ export const Cards = () => {
 
 
         useEffect(() => {
-                dispatch(setCardsTC({
-                        cardsPack_id: packId,
-                        page,
-                    }
-                ))
-            }, [dispatch, cardsTotalCount, packId, page]
+                dispatch(setCardsTC(packId))
+            }, [dispatch, cardsTotalCount, packId, page, currentPack]
         )
 
         const createCardOnClickHandler = () => {
-
-        }
+            dispatch(createCardsTC({
+                card:{
+                    cardsPack_id: packId,
+                    question: 'New card?',
+                    answer: "Yes",
+                    grade:4,
+                }}))
+        };
 
         const handleChange = (event: SelectChangeEvent) => {
             setCardsOnPage(event.target.value as string);
@@ -54,7 +57,7 @@ export const Cards = () => {
             navigate('/login')
         }
 
-        console.log(currentPackName)
+        console.log('myCards',myCards)
 
 // const createPackOnClickHandler = () => {
 //     dispatch(createPacksTC(newPack))
@@ -71,7 +74,11 @@ export const Cards = () => {
         return (
             <div>
                 <div className={s.newPackPanel}>
-                        <h2>{currentPackName?.name}</h2>
+                    <h2>{currentPackName?.name}</h2>
+                    {myCards &&
+                    <button className={s.newPackButton} onClick={createCardOnClickHandler}>Add new card
+                    </button>
+                    }
                 </div>
                 {packIsEmpty &&
                 <div style={{textAlign: 'center'}}>

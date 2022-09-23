@@ -11,15 +11,21 @@ import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import {Stars} from "./Stars";
+import {deletePackTC, setCardsTC} from "../cards-reducer";
+import {useParams} from "react-router-dom";
 
 
 export const CardsTable = () => {
     const dispatch = useAppDispatch()
+    const params = useParams()
+
     const cards = useAppSelector(state => state.cards.cards)
     const myUserId = '6226057a0373a3000426a62d'
+    const packId = params.packId ? params.packId : ''
 
     const deleteCardOnClickHandler = (_id: string) => {
-        // dispatch(deletePackTC(id))
+        dispatch(deletePackTC(_id,packId))
+
     }
     const editCardOnClickHandler = (_id: string) => {
         // dispatch(updatePackTC({
@@ -71,17 +77,6 @@ export const CardsTable = () => {
                                     </>
                                 }
                                 </TableCell>
-                                {/*<TableCell align="left">{card.grade}</TableCell>*/}
-                                {/*<TableCell align="left">*/}
-                                {/*    <SchoolOutlinedIcon/>*/}
-                                {/*    {pack.user_id === myUserId &&*/}
-                                {/*    <>*/}
-                                {/*        <BorderColorOutlinedIcon onClick={() => editPackOnClickHandler(card._id)}/>*/}
-                                {/*        <DeleteForeverOutlinedIcon onClick={() => deletePackOnClickHandler(card._id)}/>*/}
-                                {/*    </>*/}
-                                {/*    }*/}
-
-                                {/*</TableCell>*/}
                             </TableRow>
                         })}
                     </TableBody>
