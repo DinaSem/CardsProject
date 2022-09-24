@@ -1,22 +1,25 @@
 {
   "files": {
-    "main.css": "/CardsProject/static/css/main.29036267.chunk.css",
-    "main.js": "/CardsProject/static/js/main.c605cf9c.chunk.js",
-    "main.js.map": "/CardsProject/static/js/main.c605cf9c.chunk.js.map",
-    "runtime-main.js": "/CardsProject/static/js/runtime-main.7c4b9e07.js",
-    "runtime-main.js.map": "/CardsProject/static/js/runtime-main.7c4b9e07.js.map",
-    "static/js/2.4365646c.chunk.js": "/CardsProject/static/js/2.4365646c.chunk.js",
-    "static/js/2.4365646c.chunk.js.map": "/CardsProject/static/js/2.4365646c.chunk.js.map",
-    "static/js/3.1c09efe7.chunk.js": "/CardsProject/static/js/3.1c09efe7.chunk.js",
-    "static/js/3.1c09efe7.chunk.js.map": "/CardsProject/static/js/3.1c09efe7.chunk.js.map",
+    "main.css": "/CardsProject/static/css/main.0e5376f8.chunk.css",
+    "main.js": "/CardsProject/static/js/main.d12cc3ff.chunk.js",
+    "main.js.map": "/CardsProject/static/js/main.d12cc3ff.chunk.js.map",
+    "runtime-main.js": "/CardsProject/static/js/runtime-main.9ea2db8d.js",
+    "runtime-main.js.map": "/CardsProject/static/js/runtime-main.9ea2db8d.js.map",
+    "static/js/2.ed982a1e.chunk.js": "/CardsProject/static/js/2.ed982a1e.chunk.js",
+    "static/js/2.ed982a1e.chunk.js.map": "/CardsProject/static/js/2.ed982a1e.chunk.js.map",
+    "static/js/3.f3916b7b.chunk.js": "/CardsProject/static/js/3.f3916b7b.chunk.js",
+    "static/js/3.f3916b7b.chunk.js.map": "/CardsProject/static/js/3.f3916b7b.chunk.js.map",
     "index.html": "/CardsProject/index.html",
-    "static/css/main.29036267.chunk.css.map": "/CardsProject/static/css/main.29036267.chunk.css.map",
-    "static/js/2.4365646c.chunk.js.LICENSE.txt": "/CardsProject/static/js/2.4365646c.chunk.js.LICENSE.txt"
+    "static/css/main.0e5376f8.chunk.css.map": "/CardsProject/static/css/main.0e5376f8.chunk.css.map",
+    "static/js/2.ed982a1e.chunk.js.LICENSE.txt": "/CardsProject/static/js/2.ed982a1e.chunk.js.LICENSE.txt",
+    "static/media/avatar.35369528.jpg": "/CardsProject/static/media/avatar.35369528.jpg",
+    "static/media/emailPigen.e33a9a6b.jpg": "/CardsProject/static/media/emailPigen.e33a9a6b.jpg",
+    "static/media/letsLearn1.74f73154.png": "/CardsProject/static/media/letsLearn1.74f73154.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.7c4b9e07.js",
-    "static/js/2.4365646c.chunk.js",
-    "static/css/main.29036267.chunk.css",
-    "static/js/main.c605cf9c.chunk.js"
+    "static/js/runtime-main.9ea2db8d.js",
+    "static/js/2.ed982a1e.chunk.js",
+    "static/css/main.0e5376f8.chunk.css",
+    "static/js/main.d12cc3ff.chunk.js"
   ]
 }
