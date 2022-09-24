@@ -1,5 +1,4 @@
 import React from 'react';
-import {useAppSelector} from "../../../components/hooks";
 import emptyStar from '../../../images/emptyStar.png'
 import goldStar from '../../../images/goldStart.png'
 
@@ -8,7 +7,6 @@ type PropsType = {
 }
 
 export const Stars = ({grades}: PropsType) => {
-    const cards = useAppSelector(state => state.cards.cards)
 
 
     return (

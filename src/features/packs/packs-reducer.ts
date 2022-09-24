@@ -1,4 +1,3 @@
-import {Dispatch} from 'redux'
 import {setAppStatusAC} from '../app/app-reducer'
 import {handleServerNetworkError} from "../../utils/error-utils";
 import {
@@ -119,7 +118,7 @@ export const setPacksTC = (packsData: PacksGetRequestDataType): AppThunk => (dis
 //             handleServerNetworkError(error, dispatch)
 //         })
 // }
-export const createPacksTC = (newPack: CreatePackRequestType): AppThunk => (dispatch: Dispatch) => {
+export const createPacksTC = (newPack: CreatePackRequestType): AppThunk => (dispatch) => {
     // debugger
     dispatch(setAppStatusAC('loading'))
     packsAPI.createPack(newPack)
@@ -131,11 +130,10 @@ export const createPacksTC = (newPack: CreatePackRequestType): AppThunk => (disp
             handleServerNetworkError(error, dispatch)
         })
 }
-export const deletePackTC = (id:string): AppThunk => (dispatch: Dispatch) => {
+export const deletePackTC = (id:string): AppThunk => (dispatch) => {
     dispatch(setAppStatusAC('loading'))
     packsAPI.deletePack(id)
         .then(() => {
-            // @ts-ignore
             dispatch(setPacksTC({}))
             dispatch(setAppStatusAC('succeeded'))
 
@@ -144,11 +142,10 @@ export const deletePackTC = (id:string): AppThunk => (dispatch: Dispatch) => {
             handleServerNetworkError(error, dispatch)
         })
 }
-export const updatePackTC = (cardsPack: CardPacksType): AppThunk => (dispatch: Dispatch) => {
+export const updatePackTC = (cardsPack: CardPacksType): AppThunk => (dispatch) => {
     dispatch(setAppStatusAC('loading'))
     packsAPI.updatePack(cardsPack)
         .then(() => {
-            // @ts-ignore
             dispatch(setPacksTC({}))
             dispatch(setAppStatusAC('succeeded'))
         })

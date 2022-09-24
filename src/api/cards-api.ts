@@ -17,31 +17,27 @@ export const cardsAPI = {
     deleteCard(id:string) {
         return instance.delete(`/cards/card`,{ params: { id }})
     },
-    // updatePack(cardsPack: {
-    //     _id: string,
-    //     name?:string,
-    //     cardCover?:string
-    // }) {
-    //     return instance.put(`/cards/card`,{cardsPack})
-    // },
+    updateCard(card: CardType) {
+        return instance.put(`/cards/card`, {card})
+    },
 
 }
 
 export type CardType = {
     _id: string
     cardsPack_id: string
-    user_id: string
-    answer: string
-    question: string
+    user_id?: string
+    answer?: string
+    question?: string
     grade: number
-    shots: number
-    comments: string
-    type: string
-    rating: number
-    more_id: string
-    created: string
-    updated: string
-    __v: number
+    shots?: number
+    comments?: string
+    type?: string
+    rating?: number
+    more_id?: string
+    created?: string
+    updated?: string
+    __v?: number
 }
 
 export type CardsStateType = CardType[]

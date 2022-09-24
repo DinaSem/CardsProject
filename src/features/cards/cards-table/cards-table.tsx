@@ -7,11 +7,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {useAppDispatch, useAppSelector} from "../../../components/hooks";
-import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import {Stars} from "./Stars";
-import {deletePackTC, setCardsTC} from "../cards-reducer";
+import {deletePackTC, updateCardTC} from "../cards-reducer";
 import {useParams} from "react-router-dom";
 
 
@@ -24,15 +23,18 @@ export const CardsTable = () => {
     const packId = params.packId ? params.packId : ''
 
     const deleteCardOnClickHandler = (_id: string) => {
-        dispatch(deletePackTC(_id,packId))
+        dispatch(deletePackTC(_id, packId))
 
     }
     const editCardOnClickHandler = (_id: string) => {
-        // dispatch(updatePackTC({
-        //         _id,
-        //         name: "new name for Dinas pack",
-        //     }
-        // ))
+        dispatch(updateCardTC(
+        {
+            _id,
+                cardsPack_id: packId,
+            grade: 2,
+            question: 'updated question?',
+        }
+    ))
     }
 
     return (<div style={{
@@ -70,12 +72,12 @@ export const CardsTable = () => {
 
                                 </TableCell>
                                 <TableCell align="left">
-                                {card.user_id === myUserId &&
+                                    {card.user_id === myUserId &&
                                     <>
                                         <BorderColorOutlinedIcon onClick={() => editCardOnClickHandler(card._id)}/>
                                         <DeleteForeverOutlinedIcon onClick={() => deleteCardOnClickHandler(card._id)}/>
                                     </>
-                                }
+                                    }
                                 </TableCell>
                             </TableRow>
                         })}

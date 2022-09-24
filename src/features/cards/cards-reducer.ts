@@ -1,7 +1,6 @@
-import {Dispatch} from 'redux'
 import {setAppStatusAC} from '../app/app-reducer'
 import {handleServerNetworkError} from "../../utils/error-utils";
-import {cardsAPI, CardsGetRequestDataType, CardsStateType, CreateCardRequestType,} from "../../api/cards-api";
+import {cardsAPI, CardsGetRequestDataType, CardsStateType, CardType, CreateCardRequestType,} from "../../api/cards-api";
 import {AppThunk} from "../../api/store";
 import {AuthActionsType} from "../auth/registration/auth-reducer";
 
@@ -94,7 +93,7 @@ export const createCardsTC = (newCard: CreateCardRequestType): AppThunk => (disp
     // debugger
     dispatch(setAppStatusAC('loading'))
     cardsAPI.createCard(newCard)
-        .then((res) => {
+        .then(() => {
             dispatch(setCardsTC(newCard.card.cardsPack_id))
             dispatch(setAppStatusAC('succeeded'))
         })
@@ -105,8 +104,7 @@ export const createCardsTC = (newCard: CreateCardRequestType): AppThunk => (disp
 export const deletePackTC = (id:string,cardsPack_id:string): AppThunk => (dispatch) => {
     dispatch(setAppStatusAC('loading'))
    cardsAPI.deleteCard(id)
-        .then((res) => {
-            // @ts-ignore
+        .then(() => {
             dispatch(setCardsTC(cardsPack_id))
             dispatch(setAppStatusAC('succeeded'))
         })
@@ -114,18 +112,17 @@ export const deletePackTC = (id:string,cardsPack_id:string): AppThunk => (dispat
             handleServerNetworkError(error, dispatch)
         })
 }
-// export const updatePackTC = (cardsPack: CardPacksType): AppThunk => (dispatch) => {
-//     dispatch(setAppStatusAC('loading'))
-//     packsAPI.updatePack(cardsPack)
-//         .then(() => {
-//             // @ts-ignore
-//             dispatch(setPacksTC({}))
-//             dispatch(setAppStatusAC('succeeded'))
-//         })
-//         .catch((error) => {
-//             handleServerNetworkError(error, dispatch)
-//         })
-// }
+export const updateCardTC = (card: CardType): AppThunk => (dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+    cardsAPI.updateCard(card)
+        .then(() => {
+            dispatch(setCardsTC(card.cardsPack_id))
+            dispatch(setAppStatusAC('succeeded'))
+        })
+        .catch((error) => {
+            handleServerNetworkError(error, dispatch)
+        })
+}
 
 
 // types
@@ -134,12 +131,6 @@ export type CardsActionsType =
     | ReturnType<typeof setCardsTotalCountAC>
     | ReturnType<typeof setCardPageAC>
     | ReturnType<typeof createNewCardAC>
-    // | ReturnType<typeof setMinMaxValueAC>
-    // | ReturnType<typeof createNewPackAC>
-    // | ReturnType<typeof setIsLoggedInAC>
-    // | ReturnType<typeof setPackNameForSearchAC>
-    // | ReturnType<typeof setMyPacksAC>
-    // | ReturnType<typeof setCurrentPageAC>
     | AuthActionsType
 type InitialStateType = typeof initialState
 
