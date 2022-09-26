@@ -7,18 +7,21 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {useAppDispatch, useAppSelector} from "../../../components/hooks";
-import {deletePackTC, updatePackTC} from "../packs-reducer";
+import {deletePackTC, sortPacksAC, updatePackTC} from "../packs-reducer";
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import {useNavigate} from "react-router-dom";
-
+import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
 export const PacksTable = () => {
     const dispatch = useAppDispatch()
-    const packs = useAppSelector(state => state.packs.packsData)
-    const myUserId = '6226057a0373a3000426a62d'
     const navigate = useNavigate()
+    const packs = useAppSelector(state => state.packs.packsData)
+    const sortPacks = useAppSelector(state => state.packs.sortPacks)
+    const myUserId = '6226057a0373a3000426a62d'
+
 
     const deletePackOnClickHandler = (id: string) => {
         dispatch(deletePackTC(id))
@@ -29,6 +32,12 @@ export const PacksTable = () => {
                 name: "new name for Dinas pack",
             }
         ))
+    }
+    const sortPacksUpOnClickHandler = () => {
+      dispatch(sortPacksAC('1updated'))
+    }
+    const sortPacksDownOnClickHandler = () => {
+      dispatch(sortPacksAC('0updated'))
     }
 
 
@@ -47,7 +56,12 @@ export const PacksTable = () => {
                         <TableRow>
                             <TableCell>Name</TableCell>
                             <TableCell align="center">Cards</TableCell>
-                            <TableCell align="center">Last Updated</TableCell>
+                            {sortPacks === '0updated' &&
+                            <TableCell align="center">Last Updated <ArrowDropDownOutlinedIcon onClick={sortPacksUpOnClickHandler} /></TableCell>
+                            }
+                            {sortPacks === '1updated' &&
+                                <TableCell align="center">Last Updated <ArrowDropUpIcon onClick={sortPacksDownOnClickHandler} /></TableCell>
+                            }
                             <TableCell align="center">Created by</TableCell>
                             <TableCell align="center">Actions</TableCell>
                         </TableRow>
@@ -66,10 +80,10 @@ export const PacksTable = () => {
                                     {pack.name}
                                 </TableCell>
 
-                                <TableCell align="right">{pack.cardsCount}</TableCell>
-                                <TableCell align="right">{pack.updated}</TableCell>
-                                <TableCell align="right">{pack.user_id}</TableCell>
-                                <TableCell align="left">
+                                <TableCell align="center">{pack.cardsCount}</TableCell>
+                                <TableCell align="center">{pack.updated?.slice(0,10)}</TableCell>
+                                <TableCell align="center">{pack.user_id}</TableCell>
+                                <TableCell align="center">
                                     <SchoolOutlinedIcon/>
                                     {pack.user_id === myUserId &&
                                     <>

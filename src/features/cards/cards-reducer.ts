@@ -39,6 +39,10 @@ export const cardsReducer = (state: InitialStateType = initialState, action: Car
             return {...state, page: action.page}
         case "cards/CREATE-NEW-CARD":
             return <InitialStateType>{...state, newCard: action.newCard}
+        case "cards/SORT-CARDS":
+            return {...state, sortCards: action.sortCards}
+
+
         default:
             return state
     }
@@ -53,7 +57,8 @@ export const setCardPageAC = (page:number) =>
     ({type: 'cards/SET-PAGE',page} as const)
 export const createNewCardAC = (newCard:CreateCardRequestType) =>
     ({type: 'cards/CREATE-NEW-CARD',newCard} as const)
-
+export const sortCardsAC = (sortCards:string) =>
+    ({type: 'cards/SORT-CARDS',sortCards} as const)
 
 
 // thunks
@@ -131,6 +136,7 @@ export type CardsActionsType =
     | ReturnType<typeof setCardsTotalCountAC>
     | ReturnType<typeof setCardPageAC>
     | ReturnType<typeof createNewCardAC>
+    | ReturnType<typeof sortCardsAC>
     | AuthActionsType
 type InitialStateType = typeof initialState
 

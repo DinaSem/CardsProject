@@ -10,15 +10,19 @@ import {useAppDispatch, useAppSelector} from "../../../components/hooks";
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import {Stars} from "./Stars";
-import {deletePackTC, updateCardTC} from "../cards-reducer";
+import {deletePackTC, sortCardsAC, updateCardTC} from "../cards-reducer";
 import {useParams} from "react-router-dom";
-
+import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
+import ArrowDropUpOutlinedIcon from '@mui/icons-material/ArrowDropUpOutlined';
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import {sortPacksAC} from "../../packs/packs-reducer";
 
 export const CardsTable = () => {
     const dispatch = useAppDispatch()
     const params = useParams()
 
     const cards = useAppSelector(state => state.cards.cards)
+    const sortCards = useAppSelector(state => state.cards.sortCards)
     const myUserId = '6226057a0373a3000426a62d'
     const packId = params.packId ? params.packId : ''
 
@@ -36,6 +40,12 @@ export const CardsTable = () => {
         }
     ))
     }
+    const sortCardsUpOnClickHandler = () => {
+        dispatch(sortCardsAC('1updated'))
+    }
+    const sortCardsDownOnClickHandler = () => {
+        dispatch(sortCardsAC('0updated'))
+    }
 
     return (<div style={{
             maxWidth: '65%',
@@ -51,10 +61,15 @@ export const CardsTable = () => {
                     <TableHead style={{backgroundColor: '#EFEFEF'}}>
                         <TableRow>
                             <TableCell>Question</TableCell>
-                            <TableCell align="left">Answer</TableCell>
-                            <TableCell align="left">Last Updated</TableCell>
-                            <TableCell align="left">Grade</TableCell>
-                            <TableCell align="left">Actions</TableCell>
+                            <TableCell align="center">Answer</TableCell>
+                            {sortCards === '0updated' &&
+                            <TableCell align="center">Last Updated <ArrowDropDownOutlinedIcon onClick={sortCardsUpOnClickHandler} /></TableCell>
+                            }
+                            {sortCards === '1updated' &&
+                            <TableCell align="center">Last Updated <ArrowDropUpIcon onClick={sortCardsDownOnClickHandler} /></TableCell>
+                            }
+                            <TableCell align="center">Grade</TableCell>
+                            <TableCell align="center">Actions</TableCell>
 
                         </TableRow>
                     </TableHead>
@@ -65,13 +80,13 @@ export const CardsTable = () => {
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
                             >
                                 <TableCell component="th" scope="row">{card.question}</TableCell>
-                                <TableCell align="left">{card.answer}</TableCell>
-                                <TableCell align="left">{card.updated}</TableCell>
-                                <TableCell align="left">
+                                <TableCell align="center">{card.answer}</TableCell>
+                                <TableCell align="center">{card.updated?.slice(0,10)}</TableCell>
+                                <TableCell align="center">
                                     <Stars grades={card.grade}/>
 
                                 </TableCell>
-                                <TableCell align="left">
+                                <TableCell align="center">
                                     {card.user_id === myUserId &&
                                     <>
                                         <BorderColorOutlinedIcon onClick={() => editCardOnClickHandler(card._id)}/>

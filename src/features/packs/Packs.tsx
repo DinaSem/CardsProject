@@ -18,6 +18,7 @@ export const Packs = () => {
     const packId = useAppSelector(state => state.packs.user_id)
     const min = useAppSelector(state => state.packs.min)
     const max = useAppSelector(state => state.packs.max)
+    const sortPacks = useAppSelector(state => state.packs.sortPacks)
     const currentPage = useAppSelector(state => state.packs.currentPage)
     let cardPacksTotalCount = useAppSelector(state => state.packs.packsData.cardPacksTotalCount)
     const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.auth.isLoggedIn)
@@ -37,10 +38,10 @@ export const Packs = () => {
                 min,
                 max,
                 packName: packNameSearch,
-                sortPacks: 1,
+                sortPacks,
             }
         ))
-    }, [dispatch, min, max, packNameSearch, packId, newPack, packsOnPage, currentPage])
+    }, [dispatch, min, max, packNameSearch, packId, newPack, packsOnPage, currentPage,sortPacks])
 
     const createPackOnClickHandler = () => {
         dispatch(createPacksTC(newPack))

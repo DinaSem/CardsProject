@@ -7,6 +7,7 @@ import {createCardsTC, setCardPageAC, setCardsTC} from "./cards-reducer";
 import {useNavigate, useParams} from "react-router-dom";
 import {Box, MenuItem, Pagination, Select, SelectChangeEvent} from "@mui/material";
 import FormControl from "@mui/material/FormControl";
+import KeyboardBackspaceOutlinedIcon from "@mui/icons-material/KeyboardBackspaceOutlined";
 
 
 export const Cards = () => {
@@ -19,6 +20,7 @@ export const Cards = () => {
         const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn)
         const page = useAppSelector((state) => state.cards.page)
         const cardsTotalCount = useAppSelector((state) => state.cards.cardsTotalCount)
+        const sortCards = useAppSelector(state => state.cards.sortCards)
         const currentPackName = useAppSelector((state) => state.packs.packsData.cardPacks?.find((n) => n._id === packId))
         const myCards = useAppSelector((state) => state.packs.packsData.cardPacks?.filter((n) => n.user_id === myUserId))
         const currentPack = useAppSelector((state) => state.packs.packsData.cardPacks?.find((n) => n._id === packId))
@@ -32,7 +34,7 @@ export const Cards = () => {
 
         useEffect(() => {
                 dispatch(setCardsTC(packId))
-            }, [dispatch, cardsTotalCount, packId, page, currentPack]
+            }, [dispatch, cardsTotalCount, packId, page, currentPack,sortCards,]
         )
 
         const createCardOnClickHandler = () => {
@@ -52,6 +54,10 @@ export const Cards = () => {
         const handlePaginationChange = (event: ChangeEvent<any>, value: number) => {
             dispatch(setCardPageAC(value))
         };
+
+        const goToPackListOnClickHandler = () => {
+            navigate('/packs')
+        }
 
         if (!isLoggedIn) {
             navigate('/login')
@@ -73,6 +79,11 @@ export const Cards = () => {
 // };
         return (
             <div>
+                <div style={{margin:'20px 100px'}} onClick={goToPackListOnClickHandler} >
+                    <KeyboardBackspaceOutlinedIcon fontSize="small"/>
+                    <span style={{fontSize:'20px'}}>Back to Packs List</span>
+                </div>
+
                 <div className={s.newPackPanel}>
                     <h2>{currentPackName?.name}</h2>
                     {myCards &&

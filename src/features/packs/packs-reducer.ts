@@ -17,6 +17,7 @@ const initialState = {
     user_id:'',
     min:0,
     max:100,
+    sortPacks:'0updated',
     packsData: {},
     myPacksMode: false,
     newPack: {
@@ -38,7 +39,8 @@ type PacksStateType = {
     user_id:string
     min:number
     max:number
-    packName:string
+    packName:string,
+    sortPacks:string
 }
 
 export const packsReducer = (state: PacksStateType = initialState, action: PacksActionsType): PacksStateType => {
@@ -58,8 +60,10 @@ export const packsReducer = (state: PacksStateType = initialState, action: Packs
         case "packs/SET-PACK-NAME-FOR-SEARCH":
             return {...state, packNameSearch: action.packNameSearch}
         case 'packs/SET-CURRENT-PAGE':
-            // debugger
             return {...state, currentPage: action.currentPage}
+        case "packs/SORT-PACKS":
+            return {...state, sortPacks: action.sortPacks}
+
 
         default:
             return state
@@ -79,6 +83,8 @@ export const createNewPackAC = (newPack: CreatePackRequestType) =>
     ({type: 'packs/CREATE-PACK', newPack} as const)
 export const setCurrentPageAC = (currentPage:number) =>
     ({type: 'packs/SET-CURRENT-PAGE',currentPage} as const)
+export const sortPacksAC = (sortPacks:string) =>
+    ({type: 'packs/SORT-PACKS',sortPacks} as const)
 
 
 
@@ -165,6 +171,7 @@ export type PacksActionsType =
     | ReturnType<typeof setPackNameForSearchAC>
     | ReturnType<typeof setMyPacksAC>
     | ReturnType<typeof setCurrentPageAC>
+    | ReturnType<typeof sortPacksAC>
     | AuthActionsType
 
 
