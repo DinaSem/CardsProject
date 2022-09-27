@@ -17,6 +17,7 @@ const initialState = {
     pageCount: 5,
     cardsTotalCount: 0,
     currentPage: 1,
+    cardNameSearch:'',
     newCard: {
         card: {
             cardsPack_id: "",
@@ -41,7 +42,8 @@ export const cardsReducer = (state: InitialStateType = initialState, action: Car
             return <InitialStateType>{...state, newCard: action.newCard}
         case "cards/SORT-CARDS":
             return {...state, sortCards: action.sortCards}
-
+        case "cards/SET-CARD-NAME-FOR-SEARCH":
+            return {...state, cardNameSearch: action.cardNameSearch}
 
         default:
             return state
@@ -59,6 +61,9 @@ export const createNewCardAC = (newCard:CreateCardRequestType) =>
     ({type: 'cards/CREATE-NEW-CARD',newCard} as const)
 export const sortCardsAC = (sortCards:string) =>
     ({type: 'cards/SORT-CARDS',sortCards} as const)
+export const setCardNameForSearchAC = (cardNameSearch:string) =>
+    ({type: "cards/SET-CARD-NAME-FOR-SEARCH", cardNameSearch} as const)
+
 
 
 // thunks
@@ -137,6 +142,7 @@ export type CardsActionsType =
     | ReturnType<typeof setCardPageAC>
     | ReturnType<typeof createNewCardAC>
     | ReturnType<typeof sortCardsAC>
+    | ReturnType<typeof setCardNameForSearchAC>
     | AuthActionsType
 type InitialStateType = typeof initialState
 

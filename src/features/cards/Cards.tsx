@@ -8,6 +8,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {Box, MenuItem, Pagination, Select, SelectChangeEvent} from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import KeyboardBackspaceOutlinedIcon from "@mui/icons-material/KeyboardBackspaceOutlined";
+import {CardSearch} from "./card-search/CardSearch";
 
 
 export const Cards = () => {
@@ -21,6 +22,7 @@ export const Cards = () => {
         const page = useAppSelector((state) => state.cards.page)
         const cardsTotalCount = useAppSelector((state) => state.cards.cardsTotalCount)
         const sortCards = useAppSelector(state => state.cards.sortCards)
+        const cardNameSearch = useAppSelector(state => state.cards.cardNameSearch)
         const currentPackName = useAppSelector((state) => state.packs.packsData.cardPacks?.find((n) => n._id === packId))
         const myCards = useAppSelector((state) => state.packs.packsData.cardPacks?.filter((n) => n.user_id === myUserId))
         const currentPack = useAppSelector((state) => state.packs.packsData.cardPacks?.find((n) => n._id === packId))
@@ -34,17 +36,18 @@ export const Cards = () => {
 
         useEffect(() => {
                 dispatch(setCardsTC(packId))
-            }, [dispatch, cardsTotalCount, packId, page, currentPack,sortCards,]
+            }, [dispatch, cardsTotalCount, packId, page, currentPack, sortCards, cardNameSearch]
         )
 
         const createCardOnClickHandler = () => {
             dispatch(createCardsTC({
-                card:{
+                card: {
                     cardsPack_id: packId,
                     question: 'New card?',
                     answer: "Yes",
-                    grade:4,
-                }}))
+                    grade: 4,
+                }
+            }))
         };
 
         const handleChange = (event: SelectChangeEvent) => {
@@ -63,25 +66,13 @@ export const Cards = () => {
             navigate('/login')
         }
 
-        console.log('myCards',myCards)
+        console.log('myCards', myCards)
 
-// const createPackOnClickHandler = () => {
-//     dispatch(createPacksTC(newPack))
-// }
-//
-// const handleChange = (event: SelectChangeEvent) => {
-//     setPageCount(event.target.value as string);
-// };
-// // const [page, setPage] = useState<number>(1);
-// const handlePaginationChange = (event: ChangeEvent<any>, value: number) => {
-//     // setPage(value);
-//     dispatch(setCurrentPageAC(value))
-// };
         return (
             <div>
-                <div style={{margin:'20px 100px'}} onClick={goToPackListOnClickHandler} >
+                <div style={{margin: '20px 100px'}} onClick={goToPackListOnClickHandler}>
                     <KeyboardBackspaceOutlinedIcon fontSize="small"/>
-                    <span style={{fontSize:'20px'}}>Back to Packs List</span>
+                    <span style={{fontSize: '20px'}}>Back to Packs List</span>
                 </div>
 
                 <div className={s.newPackPanel}>
@@ -99,7 +90,11 @@ export const Cards = () => {
                 }
                 {/*<FilterPanel/>*/}
                 {!packIsEmpty &&
-                <>
+                <div style={{justifyContent: 'center'}}>
+                    <div className={s.searchWrapper}>
+                        <CardSearch/>
+                    </div>
+
                     <CardsTable/>
                     <div className={s.paginationWrapper}>
                         <Pagination count={pagesCount} shape="rounded" page={page} onChange={handlePaginationChange}/>
@@ -115,7 +110,7 @@ export const Cards = () => {
                         </Box>
                         <span>cards per Page</span>
                     </div>
-                </>
+                </div>
                 }
             </div>
         );
