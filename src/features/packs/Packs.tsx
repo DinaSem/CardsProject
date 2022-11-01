@@ -10,7 +10,6 @@ import FormControl from "@mui/material/FormControl";
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "../../api/store";
 import {useNavigate} from "react-router-dom";
-
 export const Packs = () => {
 
     const packNameSearch = useAppSelector(state => state.packs.packNameSearch)

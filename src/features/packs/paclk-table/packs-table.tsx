@@ -14,6 +14,9 @@ import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import {useNavigate} from "react-router-dom";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import {DeleteModal} from "../../modal/DeleteModal";
+import AddModal from "../../modal/AddModal";
+import {EditModal} from "../../modal/EditModal";
 
 export const PacksTable = () => {
     const dispatch = useAppDispatch()
@@ -34,10 +37,10 @@ export const PacksTable = () => {
         ))
     }
     const sortPacksUpOnClickHandler = () => {
-      dispatch(sortPacksAC('1updated'))
+        dispatch(sortPacksAC('1updated'))
     }
     const sortPacksDownOnClickHandler = () => {
-      dispatch(sortPacksAC('0updated'))
+        dispatch(sortPacksAC('0updated'))
     }
 
 
@@ -57,17 +60,19 @@ export const PacksTable = () => {
                             <TableCell>Name</TableCell>
                             <TableCell align="center">Cards</TableCell>
                             {sortPacks === '0updated' &&
-                            <TableCell align="center">Last Updated <ArrowDropDownOutlinedIcon onClick={sortPacksUpOnClickHandler} /></TableCell>
+                                <TableCell align="center">Last Updated <ArrowDropDownOutlinedIcon
+                                    onClick={sortPacksUpOnClickHandler}/></TableCell>
                             }
                             {sortPacks === '1updated' &&
-                                <TableCell align="center">Last Updated <ArrowDropUpIcon onClick={sortPacksDownOnClickHandler} /></TableCell>
+                                <TableCell align="center">Last Updated <ArrowDropUpIcon
+                                    onClick={sortPacksDownOnClickHandler}/></TableCell>
                             }
                             <TableCell align="center">Created by</TableCell>
                             <TableCell align="center">Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {packs?.cardPacks?.map((pack) =>{
+                        {packs?.cardPacks?.map((pack) => {
 
                             const onClickNamePack = () => {
                                 navigate(`/cards_list/${pack._id}`)
@@ -81,15 +86,17 @@ export const PacksTable = () => {
                                 </TableCell>
 
                                 <TableCell align="center">{pack.cardsCount}</TableCell>
-                                <TableCell align="center">{pack.updated?.slice(0,10)}</TableCell>
+                                <TableCell align="center">{pack.updated?.slice(0, 10)}</TableCell>
                                 <TableCell align="center">{pack.user_id}</TableCell>
                                 <TableCell align="center">
                                     <SchoolOutlinedIcon/>
                                     {pack.user_id === myUserId &&
-                                    <>
-                                        <BorderColorOutlinedIcon onClick={() => editPackOnClickHandler(pack._id)}/>
-                                        <DeleteForeverOutlinedIcon onClick={() => deletePackOnClickHandler(pack._id)}/>
-                                    </>
+                                        <>
+                                            <EditModal id={pack._id}/>
+                                            {/*<DeleteForeverOutlinedIcon onClick={() => deletePackOnClickHandler(pack._id)}/>*/}
+                                            <DeleteModal id={pack._id}/>
+                                            {/*<DeleteModal id={pack._id}/>*/}
+                                        </>
                                     }
 
                                 </TableCell>
